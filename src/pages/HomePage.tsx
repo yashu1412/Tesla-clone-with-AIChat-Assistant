@@ -57,7 +57,7 @@ const HomePage = () => {
           primaryButtonText="Order Now"
           secondaryButtonText="Demo Drive"
           primaryButtonLink="/model3"
-          secondaryButtonLink="/model3"
+          secondaryButtonLink="/model3/learn-more"
           isFirst={true}
         />
 
@@ -65,9 +65,10 @@ const HomePage = () => {
         <ProductSection
           title="Model Y"
           subtitle="Lease starting at $399/mo*"
+          backgroundImage={ModelYImage}
           backgroundVideo={TeslaVideo}
           primaryButtonText="Order Now"
-          secondaryButtonText="Demo Drive"
+          secondaryButtonText="Learn More"
           primaryButtonLink="/modely"
           secondaryButtonLink="/modely"
         />
@@ -90,7 +91,7 @@ const HomePage = () => {
           subtitle="From $71,090*"
           backgroundImage={ModelSImage}
           primaryButtonText="Order Now"
-          secondaryButtonText="Demo Drive"
+          secondaryButtonText="Learn More"
           primaryButtonLink="/models"
           secondaryButtonLink="/models"
         />
@@ -101,7 +102,7 @@ const HomePage = () => {
           subtitle="From $68,590*"
           backgroundImage={ModelXImage}
           primaryButtonText="Order Now"
-          secondaryButtonText="Demo Drive"
+          secondaryButtonText="Learn More"
           primaryButtonLink="/modelx"
           secondaryButtonLink="/modelx"
         />
