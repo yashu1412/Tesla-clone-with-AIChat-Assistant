@@ -1,162 +1,288 @@
-
-import React, { useEffect, useRef } from "react";
+import React from 'react';
 import { Link } from "react-router-dom";
-import Navbar from "../components/common/Navbar";
-import Footer from "../components/common/Footer";
-import ProductSection from "../components/products/ProductSection";
-
-// Using placeholder images for now
-import {
-  Model3Image,
-  ModelYImage,
-  CyberTruckImage,
-  ModelXImage,
-  ModelSImage,
-  SolarPanelImage,
-  SolarRoofImage,
-  PowerWallImage,
-  AccessoriesImage,
-  TeslaVideo,
-  CyberTruckLogo
-} from "../Assets/placeholder";
-
-const HomePage = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      const sections = document.querySelectorAll('.snap-center');
-      
-      sections.forEach((section, index) => {
-        const rect = section.getBoundingClientRect();
-        if (rect.top <= 100 && rect.bottom >= 100) {
-          // We could add animations or state changes here
-          console.log(`Visible section: ${index}`);
-        }
-      });
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
+// files
+import Navbar from '../components/common/Navbar';
+import Footer from '../components/common/Footer';
+// asstes
+import Model3Image from '../Assets/Homepage-Model-3-Desktop-US.jpg'; // Ensure correct path
+import ModelyImage from '../Assets/Homepage-Model-Y-2-Hero-Desktop-APAC-LHD.jpg';
+import CyberTruck from '../Assets/Homepage-Cybertruck-Desktop-v3.jpg';
+import CyberTruckText from '../Assets/cybtertruckText.png';
+import ModelXImage from '../Assets/Homepage-Model-X-Desktop-US.jpg';
+import ModelSImage from '../Assets/Homepage-Model-S-Desktop-US.jpg';
+import SolarPanel from '../Assets/Homepage-SolarPanels-01-Desktop.jpg';
+import SolarRoof from '../Assets/Homepage-SolarRoof-Desktop-US.jpg'
+import PowerWall from '../Assets/Homepage-Powerwall-Desktop-US.jpg'
+import Accessories from '../Assets/Homepage-Accessories-Desktop-US.jpg'
+import TeslaVideo from '../Assets/teslaVideo.mp4'
+const Home = () => {
   return (
-    <div 
-      ref={containerRef} 
-      className="scroll-smooth overflow-x-hidden"
-    >
-      <Navbar />
-
-      <div className="w-full snap-y snap-mandatory">
-        {/* Model 3 Section */}
-        <ProductSection
-          title="Model 3"
-          subtitle="Lease starting at $329/mo*"
-          backgroundImage={Model3Image}
-          primaryButtonText="Order Now"
-          secondaryButtonText="Demo Drive"
-          primaryButtonLink="/model3"
-          secondaryButtonLink="/model3/learn-more"
-          isFirst={true}
-        />
-
-        {/* Model Y Section */}
-        <ProductSection
-          title="Model Y"
-          subtitle="Lease starting at $399/mo*"
-          backgroundImage={ModelYImage}
-          backgroundVideo={TeslaVideo}
-          primaryButtonText="Order Now"
-          secondaryButtonText="Learn More"
-          primaryButtonLink="/modely"
-          secondaryButtonLink="/modely"
-        />
-
-        {/* Cybertruck Section */}
-        <ProductSection
-          title="Cybertruck"
-          backgroundImage={CyberTruckImage}
-          logoImage={CyberTruckLogo}
-          buttonType="dark"
-          primaryButtonText="Order Now"
-          secondaryButtonText="Learn More"
-          primaryButtonLink="/cybertruck"
-          secondaryButtonLink="/cybertruck"
-        />
-
-        {/* Model S Section */}
-        <ProductSection
-          title="Model S"
-          subtitle="From $71,090*"
-          backgroundImage={ModelSImage}
-          primaryButtonText="Order Now"
-          secondaryButtonText="Learn More"
-          primaryButtonLink="/models"
-          secondaryButtonLink="/models"
-        />
-
-        {/* Model X Section */}
-        <ProductSection
-          title="Model X"
-          subtitle="From $68,590*"
-          backgroundImage={ModelXImage}
-          primaryButtonText="Order Now"
-          secondaryButtonText="Learn More"
-          primaryButtonLink="/modelx"
-          secondaryButtonLink="/modelx"
-        />
-
-        {/* Solar Panels Section */}
-        <ProductSection
-          title="Solar Panels"
-          subtitle="Lowest Cost Solar Panels in America"
-          backgroundImage={SolarPanelImage}
-          buttonType="dark"
-          primaryButtonText="Order Now"
-          secondaryButtonText="Learn More"
-          primaryButtonLink="/solar-panels"
-          secondaryButtonLink="/solar-panels"
-        />
-
-        {/* Solar Roof Section */}
-        <ProductSection
-          title="Solar Roof"
-          subtitle="Produce Clean Energy From Your Roof"
-          backgroundImage={SolarRoofImage}
-          buttonType="dark"
-          primaryButtonText="Order Now"
-          secondaryButtonText="Learn More"
-          primaryButtonLink="/solar-roof"
-          secondaryButtonLink="/solar-roof"
-        />
-
-        {/* Powerwall Section */}
-        <ProductSection
-          title="Powerwall"
-          backgroundImage={PowerWallImage}
-          buttonType="dark"
-          primaryButtonText="Order Now"
-          secondaryButtonText="Learn More"
-          primaryButtonLink="/powerwall"
-          secondaryButtonLink="/powerwall"
-        />
-
-        {/* Accessories Section */}
-        <ProductSection
-          title="Accessories"
-          backgroundImage={AccessoriesImage}
-          buttonType="dark"
-          primaryButtonText="Shop Now"
-          secondaryButtonText={undefined}
-          primaryButtonLink="/shop"
-          secondaryButtonLink="/"
-        />
+    <div className="flex flex-col items-center">
+            {/* Navbar should be positioned on top of the image */}
+            <div className="absolute top-0 left-0 w-full z-10">
+        <Navbar />
       </div>
+      <Navbar />
+  <div className='w-full'>
+   {/* Modal 3 */}
+   <div className="relative w-full h-screen">
+        <img 
+          src={Model3Image} 
+          alt="Tesla Model 3" 
+          className="w-full h-full object-cover"
+        />
 
-      <Footer />
+        {/* Content Overlay */}
+        <div className="absolute top-[25%] w-full text-center">
+          <h1 className="text-5xl font-bold text-white">Model 3</h1>
+          <h1 className="text-2xl font-semibold text-white ">$7,500 Federal Tax Credit at Purchase</h1>
+        </div>
+
+            {/* Buttons */}
+            <div className="absolute bottom-[60%] w-full flex justify-center gap-4 front-roboto">
+            <Link to="/model3/order-now">
+              <button className="bg-blue-600 text-white px-8 py-3 rounded-md text-lg font-medium hover:bg-blue-700">
+                Order Now
+              </button>
+            </Link>
+            <Link to="/model3/learn-more">
+              <button className="bg-white text-black px-8 py-3 rounded-md text-lg font-medium hover:bg-gray-100">
+                Learn More
+              </button>
+            </Link>
+          </div>
+    </div>
+       {/* Modal y */}
+   <div className="relative w-full h-screen">
+        <img 
+          src={ModelyImage} 
+          alt="Tesla Model 3" 
+          className="w-full h-full object-cover"
+        />
+
+        {/* Content Overlay */}
+        <div className="absolute top-[25%] w-full text-center">
+          <h1 className="text-5xl font-bold text-white">Model Y</h1>
+          <h1 className="text-2xl font-semibold text-white ">$7,500 Federal Tax Credit at Purchase</h1>
+        </div>
+
+        {/* Buttons */}
+        <div className="absolute bottom-[5%] w-full flex justify-center gap-4 front-roboto">
+          <button className="bg-blue-600 text-white px-8 py-3 rounded-md text-lg font-medium hover:bg-blue-700">
+            Order Now
+          </button>
+          <button className="bg-white text-black px-8 py-3 rounded-md text-lg font-medium hover:bg-gray-100">
+            Learn More
+          </button>
+        </div>
+   </div>
+          {/* cybertruck */}
+          <div className="relative w-full h-screen">
+        <img 
+          src={CyberTruck} 
+          alt="Tesla Model 3" 
+          className="w-full h-full object-cover"
+        />
+        {/* Content Overlay */}
+        <div className="absolute top-[27%] w-full text-center">
+          <h1 className="text-2xl font-semibold text-white underline">1.99% APR Ending March 31</h1>
+        </div>
+
+        {/* Content Overlay */}
+        <div className="absolute top-[14%] w-full flex-col justify-between items-center">
+        <img 
+          src={CyberTruckText} 
+          alt="Tesla Model 3" 
+          className="w-[400px] h-[110px] object-cover text-center translate-x-[150%] "
+        />
+        </div>
+
+{/* Buttons */}
+<div className="absolute bottom-[5%] w-full flex flex-col items-center gap-4 font-roboto">
+  <div className="flex flex-col items-center">
+    <h1 className="text-2xl font-semibold text-white ">☆ ☆ ☆ ☆ ☆</h1>
+    <h1 className="text-base font-normal text-white">Overall NHTSA Safety Rating</h1>
+  </div>
+  <div className='space-x-4'>
+  <button className="bg-black text-gray-500 px-20 py-2 text-base font-medium hover:bg-gray-100">
+    Order Now
+  </button>
+  <button className="bg-black text-gray-500 px-20 py-2 text-base font-medium hover:bg-gray-100">
+    Learn More
+  </button>
+  </div>
+</div>
+
+          </div>
+                 {/* Modal X */}
+        <div className="relative w-full h-screen">
+        <img 
+          src={ModelXImage} 
+          alt="Tesla Model 3" 
+          className="w-full h-full object-cover"
+        />
+
+        {/* Content Overlay */}
+        <div className="absolute top-[25%] w-full text-center">
+          <h1 className="text-5xl font-bold text-white">Model X</h1>
+          <h1 className="text-2xl font-semibold text-white ">Free Supercharging Included</h1>
+        </div>
+
+        {/* Buttons */}
+        <div className="absolute bottom-[5%] w-full flex justify-center gap-4 front-roboto">
+          <button className="bg-blue-600 text-white px-8 py-3 rounded-md text-lg font-medium hover:bg-blue-700">
+            Order Now
+          </button>
+          <button className="bg-white text-black px-8 py-3 rounded-md text-lg font-medium hover:bg-gray-100">
+            Learn More
+          </button>
+        </div>
+   </div>
+          {/* Modal S */}
+          <div className="relative w-full h-screen">
+        <img 
+          src={ModelSImage} 
+          alt="Tesla Model 3" 
+          className="w-full h-full object-cover"
+        />
+
+        {/* Content Overlay */}
+        <div className="absolute top-[25%] w-full text-center">
+          <h1 className="text-5xl font-bold text-white">Model S</h1>
+          <h1 className="text-2xl font-semibold text-white ">Free Supercharging Included</h1>
+        </div>
+
+        {/* Buttons */}
+        <div className="absolute bottom-[5%] w-full flex justify-center gap-4 front-roboto">
+          <button className="bg-blue-600 text-white px-8 py-3 rounded-md text-lg font-medium hover:bg-blue-700">
+            Order Now
+          </button>
+          <button className="bg-white text-black px-8 py-3 rounded-md text-lg font-medium hover:bg-gray-100">
+            Learn More
+          </button>
+        </div>
+   </div>
+          {/* Solar Panel */}
+          <div className="relative w-full h-screen">
+        <img 
+          src={SolarPanel} 
+          alt="Tesla Model 3" 
+          className="w-full h-full object-cover"
+        />
+
+        {/* Content Overlay */}
+        <div className="absolute top-[15%] w-full text-center">
+          <h1 className="text-5xl font-bold text-white">Solar Panel</h1>
+          <h1 className="text-2xl font-semibold text-white underline ">Schedule a Virtual Consultation</h1>
+          
+        </div>
+
+        {/* Buttons */}
+        <div className="absolute bottom-[5%] w-full flex justify-center gap-4 front-roboto">
+          <button className="bg-blue-600 text-white px-8 py-3 rounded-md text-lg font-medium hover:bg-blue-700">
+            Order Now
+          </button>
+          <button className="bg-white text-black px-8 py-3 rounded-md text-lg font-medium hover:bg-gray-100">
+            Learn More
+          </button>
+        </div>
+   </div>
+          {/* SolarRoof */}
+          <div className="relative w-full h-screen">
+        <img 
+          src={SolarRoof} 
+          alt="Tesla Model 3" 
+          className="w-full h-full object-cover"
+        />
+
+        {/* Content Overlay */}
+        <div className="absolute top-[25%] w-full text-center">
+          <h1 className="text-5xl font-bold text-white">Solar Roof</h1>
+          <h1 className="text-2xl font-semibold text-white  ">Produce Clean Energy From Your Roof</h1>
+        </div>
+
+        {/* Buttons */}
+        <div className="absolute bottom-[5%] w-full flex justify-center gap-4 front-roboto">
+          <button className="bg-blue-600 text-white px-8 py-3 rounded-md text-lg font-medium hover:bg-blue-700">
+            Order Now
+          </button>
+          <button className="bg-white text-black px-8 py-3 rounded-md text-lg font-medium hover:bg-gray-100">
+            Learn More
+          </button>
+        </div>
+   </div>
+          {/* Power wall */}
+          <div className="relative w-full h-screen">
+        <img 
+          src={PowerWall} 
+          alt="Tesla Model 3" 
+          className="w-full h-full object-cover"
+        />
+
+        {/* Content Overlay */}
+        <div className="absolute top-[15%] w-full text-center">
+          <h1 className="text-5xl font-bold text-white">Power Wall</h1>
+          
+        </div>
+
+        {/* Buttons */}
+        <div className="absolute bottom-[5%] w-full flex justify-center gap-4 front-roboto">
+          <button className="bg-blue-600 text-white px-8 py-3 rounded-md text-lg font-medium hover:bg-blue-700">
+            Order Now
+          </button>
+          <button className="bg-white text-black px-8 py-3 rounded-md text-lg font-medium hover:bg-gray-100">
+            Learn More
+          </button>
+        </div>
+   </div>
+          {/* Accessories */}
+          <div className="relative w-full h-screen">
+        <img 
+          src={Accessories} 
+          alt="Tesla Model 3" 
+          className="w-full h-full object-cover"
+        />
+
+        {/* Content Overlay */}
+        <div className="absolute top-[15%] w-full text-center">
+          <h1 className="text-5xl font-bold text-white">Accessories</h1>
+        </div>
+
+        {/* Buttons */}
+        <div className="absolute bottom-[5%] w-full flex justify-center gap-4 front-roboto">
+          <button className="bg-blue-600 text-white px-8 py-3 rounded-md text-lg font-medium hover:bg-blue-700">
+            Order Now
+          </button>
+          <button className="bg-white text-black px-8 py-3 rounded-md text-lg font-medium hover:bg-gray-100">
+            Learn More
+          </button>
+        </div>
+   </div>
+          {/* We are Tesla video */}
+          <div className="relative w-full h-screen">
+          <video className="w-full h-full object-cover" autoPlay loop muted>
+            <source src={TeslaVideo} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+
+        {/* Content Overlay */}
+        <div className=''>
+        <div className="absolute top-[25%] w-full text-center ">
+          <h1 className="text-5xl font-bold text-white">We are Tesla</h1>
+        </div>
+
+        {/* Buttons */}
+        <div className="absolute bottom-[60%] w-full flex justify-center gap-4 front-roboto">
+          <button className="bg-blue-600 text-white px-8 py-3 rounded-md text-lg font-medium hover:bg-blue-700">
+            Join Tesla
+          </button>
+        </div>
+        </div>
+   </div>
+  </div>
+  <Footer />
     </div>
   );
 };
 
-export default HomePage;
+export default Home;

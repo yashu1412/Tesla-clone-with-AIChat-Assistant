@@ -1,19 +1,43 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Footer = () => {
+const Footer: React.FC = () => {
   return (
-    <footer className="bg-transparent py-8 text-center text-gray-600 text-xs">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-wrap justify-center gap-4 md:gap-6">
-          <Link to="/about" className="hover:text-gray-900">Tesla © {new Date().getFullYear()}</Link>
-          <Link to="/privacy" className="hover:text-gray-900">Privacy & Legal</Link>
-          <Link to="/recalls" className="hover:text-gray-900">Vehicle Recalls</Link>
-          <Link to="/contact" className="hover:text-gray-900">Contact</Link>
-          <Link to="/news" className="hover:text-gray-900">News</Link>
-          <Link to="/locations" className="hover:text-gray-900">Locations</Link>
-        </div>
+    <footer className="w-full py-24 bg-gray-50 text-gray-800 border-t">
+      <div className="container mx-auto flex items-center justify-center text-sm space-x-4">
+        <p className="text-gray-800 text-sm translate-y-[3px] font-medium  ">Tesla © {new Date().getFullYear()}</p>
+        <ul className="flex flex-wrap justify-center gap-4 mt-2 text-sm font-medium">
+          <li>
+            <Link to="/privacy" className="hover:underline text-gray-800">
+              Privacy & Legal
+            </Link>
+          </li>
+          <li>
+            <Link to="/recalls" className="hover:underline text-gray-800">
+              Vehicle Recalls
+            </Link>
+          </li>
+          <li>
+            <Link to="/contact" className="hover:underline text-gray-800">
+              Contact
+            </Link>
+          </li>
+          <li>
+            <Link to="/news" className="hover:underline text-gray-800">
+              News
+            </Link>
+          </li>
+          <li>
+            <Link to="/updates" className="hover:underline text-gray-800">
+              Get Updates
+            </Link>
+          </li>
+          <li>
+            <Link to="/locations" className="hover:underline text-gray-800">
+              Locations
+            </Link>
+          </li>
+        </ul>
       </div>
     </footer>
   );
