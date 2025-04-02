@@ -1,11 +1,13 @@
 
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
+  const isModel3LearnMorePage = location.pathname === "/model3/learn-more";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,6 +24,60 @@ const Navbar = () => {
     };
   }, []);
 
+  // Special Model 3 navbar that appears when scrolled on the learn more page
+  if (isModel3LearnMorePage && isScrolled) {
+    return (
+      <nav className="fixed top-0 left-0 w-full z-50 bg-black">
+        <div className="max-w-[1440px] mx-auto px-4 py-3 flex justify-between items-center">
+          <Link to="/model3" className="text-white text-xl font-medium">
+            Model 3
+          </Link>
+
+          <div className="hidden md:flex items-center space-x-8">
+            <Link to="/model3/learn-more" className="text-sm font-medium text-white hover:text-gray-300">
+              Experience Model 3
+            </Link>
+            <Link to="/model3/compare" className="text-sm font-medium text-white hover:text-gray-300">
+              Compare
+            </Link>
+            <Link to="/trade-in" className="text-sm font-medium text-white hover:text-gray-300">
+              Trade In
+            </Link>
+            <Link to="/model3" className="text-sm font-medium text-white hover:text-gray-300">
+              Order Now
+            </Link>
+          </div>
+
+          {/* Mobile menu button */}
+          <button 
+            onClick={() => setIsOpen(true)} 
+            className="md:hidden text-white"
+          >
+            <Menu className="h-6 w-6" />
+          </button>
+        </div>
+
+        {/* Mobile menu overlay */}
+        {isOpen && (
+          <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-40 overflow-auto">
+            <div className="flex justify-end p-6">
+              <button onClick={() => setIsOpen(false)}>
+                <X className="h-6 w-6 text-white" />
+              </button>
+            </div>
+            <div className="flex flex-col space-y-4 px-8 py-4">
+              <Link to="/model3/learn-more" className="text-lg font-medium text-white hover:text-gray-300 py-2 border-b border-gray-700" onClick={() => setIsOpen(false)}>Experience Model 3</Link>
+              <Link to="/model3/compare" className="text-lg font-medium text-white hover:text-gray-300 py-2 border-b border-gray-700" onClick={() => setIsOpen(false)}>Compare</Link>
+              <Link to="/trade-in" className="text-lg font-medium text-white hover:text-gray-300 py-2 border-b border-gray-700" onClick={() => setIsOpen(false)}>Trade In</Link>
+              <Link to="/model3" className="text-lg font-medium text-white hover:text-gray-300 py-2 border-b border-gray-700" onClick={() => setIsOpen(false)}>Order Now</Link>
+            </div>
+          </div>
+        )}
+      </nav>
+    );
+  }
+
+  // Standard navbar (transparent or black based on scroll)
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? "bg-black/70 backdrop-blur-md" : "bg-transparent"}`}>
       <div className="max-w-[1440px] mx-auto px-4 py-4 flex justify-between items-center">
