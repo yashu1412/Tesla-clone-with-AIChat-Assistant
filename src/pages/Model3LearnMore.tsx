@@ -5,26 +5,62 @@ import Footer from "../components/common/Footer";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
+// We'll need to add these video URLs - replace with actual Tesla videos
+const video1 = "https://digitalassets.tesla.com/tesla-contents/video/upload/f_auto,q_auto/Model-3-Main-Hero-Desktop-LHD-Animation.mp4";
+const video2 = "https://digitalassets.tesla.com/tesla-contents/video/upload/f_auto,q_auto/Model-3-Interior-Hero-Desktop-LHD.mp4";
+
 const Model3LearnMore = () => {
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
       
       <div className="pt-16">
-        {/* Hero Section */}
+        {/* Hero Section with Videos */}
         <div className="relative h-screen">
-          <img
-            src="https://tesla-cdn.thron.com/delivery/public/image/tesla/03e533bf-8b1d-463f-9813-9a597aafb280/bvlatuR/std/4096x2560/M3-Homepage-Desktop-LHD"
-            alt="Tesla Model 3"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/30">
-            <div className="text-center">
-              <h1 className="text-5xl font-bold text-white">Model 3</h1>
-              <p className="mt-4 text-white text-xl max-w-2xl mx-auto">
-                The Tesla Model 3 combines performance, safety, and technology into a revolutionary electric sedan.
+          {/* Video Container */}
+          <div className="absolute inset-0 flex flex-col justify-between">
+            {/* First Video */}
+            <video className="w-full h-1/2 object-cover" autoPlay loop muted playsInline>
+              <source src={video1} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+
+            {/* Second Video */}
+            <video className="w-full h-1/2 object-cover" autoPlay loop muted playsInline>
+              <source src={video2} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+
+          {/* Overlay with Shadows */}
+          <div className="absolute inset-0 flex flex-col justify-between bg-black/30">
+            {/* Top Shadow */}
+            <div className="absolute top-0 left-0 w-full h-44 bg-gradient-to-b from-black/90 to-transparent"></div>
+
+            {/* Content - Title and Info */}
+            <div className="text-center text-white mt-28 z-10">
+              <h1 className="text-5xl font-bold drop-shadow-lg">Built for Distance</h1>
+              <p className="text-lg font-medium mt-2 drop-shadow-md">
+                Go up to 363 miles (EPA est.) on a single charge with updated exterior styling optimized for maximum aerodynamics.
               </p>
             </div>
+
+            {/* Bottom Shadow */}
+            <div className="absolute bottom-0 left-0 w-full h-44 bg-gradient-to-t from-black/60 to-transparent"></div>
+          </div>
+        </div>
+        
+        {/* New Colors Section */}
+        <div className="py-16 px-6 bg-black text-white text-center">
+          <div className="max-w-4xl mx-auto">
+            <div className="flex justify-center gap-2 mb-4">
+              <div className="w-2 h-2 bg-white rounded-full"></div>
+              <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+            </div>
+            <h2 className="text-3xl font-bold mb-3">Two New Colors</h2>
+            <p className="text-lg">
+              Stealth Grey and Ultra Red are designed to change with the light and viewing angle.
+            </p>
           </div>
         </div>
         
