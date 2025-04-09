@@ -3,9 +3,9 @@ import { FaPause, FaPlay, FaVolumeMute, FaVolumeUp, FaExpand } from "react-icons
 import { Link } from "react-router-dom";
 
 // Internal Dependencies
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import Navbar from "../../../common/Navbar";
-import Footer from "../../../common/Footer";
+
 
 // Asset Imports
 import video1 from "../../../../Assets/model3/HeroVideo1.mp4";
@@ -20,6 +20,8 @@ import mobileimage3 from "../../../../Assets/model3/mobile3.jpg";
 import moodimage1 from "../../../../Assets/model3/Model-3-Mode-Slide-1-Desktop-NA.jpg";
 import moodimage2 from "../../../../Assets/model3/Model-3-Mode-Slide-2-Desktop-NA.jpg";
 import moodimage3 from "../../../../Assets/model3/Model-3-Mode-Slide-3-Desktop-NA.jpg";
+import SafetyImage from "../../../../Assets/model3/Engineered for Safety.png";
+
 
 
 
@@ -29,6 +31,7 @@ const Model3LearnMore = () => {
   const [progress, setProgress] = useState(0);
   const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef(null);
+  const [selectedTab, setSelectedTab] = useState('awd');
 
   const videoData = [
     {
@@ -95,6 +98,10 @@ const Model3LearnMore = () => {
       src: "https://digitalassets.tesla.com/tesla-contents/image/upload/f_auto,q_auto/Model-3-Charging-Slide-3-Desktop-NA.jpg",
     },
   ];
+  const Dimensionimages = {
+    awd: "https://digitalassets.tesla.com/tesla-contents/image/upload/f_auto,q_auto/Model-3-Specs-LR-AWD-Desktop-Imperial.png",
+    rwd: "https://digitalassets.tesla.com/tesla-contents/image/upload/Model-3-Specs-LR-RWD-Desktop-Imperial.png",
+  };
   const togglePlay = () => {
     if (videoRef.current.paused) {
       videoRef.current.play();
@@ -342,7 +349,7 @@ const Model3LearnMore = () => {
     </div>
 {/* cabin Section */}
 <div className="relative h-screen">
-      {/* Video Container */}
+     
       <div className="absolute inset-0 flex flex-col justify-between">
         
         <img
@@ -515,9 +522,301 @@ const Model3LearnMore = () => {
     </div>
   </div>
 </div>
+{/* Engineered for Safety */}
+<div className="relative h-screen flex items-center justify-center bg-black pb-10">
+  {/* Image Container with Shadows */}
+  <div className="relative w-[70%] h-[60%]">
+    {/* Image with Shadows */}
+    <img
+      src={SafetyImage}
+      alt="Feature"
+      className="w-full h-full object-cover shadow-[0_0_50px_rgba(0,0,0,0.7)] rounded-lg"
+    />
 
-      </div>      
-      <Footer />
+    {/* Overlay for Soft Shadows */}
+    <div className="absolute inset-0 bg-black/30 rounded-lg"></div>
+  </div>
+
+  {/* Text Section - Separate from Image */}
+  <div className="absolute bottom-2 left-16 text-white max-w-xl ">
+    <h2 className="text-4xl font-bold">Engineered for Safety</h2>
+    <p className="mt-4 text-lg text-gray-300">
+      Model 3 benefits from the same features that make our other vehicles so safe: 
+      energy-absorbing side sills, a fortified battery pack mounted low in the vehicle 
+      to reduce rollover risk, and a metal body structure that can withstand many times 
+      the car’s weight. Active safety features like automatic emergency braking come standard.
+    </p>
+    <button className="mt-6 px-8 py-3 border border-white text-white text-lg font-medium rounded-md hover:bg-white hover:text-black transition duration-300">
+      Safety Overview
+    </button>
+  </div>
+</div>
+{/* Autopilot Section */}
+<div className="relative h-screen flex items-center justify-center bg-black pb-10">
+  {/* Text Content on Left */}
+  <div className="absolute left-10 top-1/3 text-white max-w-md z-10 space-y-24">
+  <div>
+    <h2 className="text-2xl font-bold">360°</h2>
+    <p className="text-base text-gray-300 mt-2">Degrees of Visibility</p>
+  </div>
+    <div className="mt-8 gap-2">
+      {/* <span className="text-2xl text-white ">⚫</span> Icon Placeholder */}
+      <div>
+        <h3 className="text-base ">Tesla Vision</h3>
+      </div>
+    </div>
+
+    <div className="mt-8">
+      <h2 className="text-2xl font-bold">250 m</h2>
+      <p className="text-base text-gray-300 mt-2">Powerful Visual Processing</p>
+    </div>
+  </div>
+
+  {/* Image Container with Shadows */}
+  <div className="relative w-full h-full">
+    {/* Image with Shadows */}
+    <img
+      src="https://digitalassets-secure.tesla.com/image/upload/v1693298310/m36shjkosgquqigqzuke.jpg"
+      alt="Autopilot"
+      className="w-full h-full object-cover shadow-[0_0_50px_rgba(0,0,0,0.7)] rounded-lg"
+    />
+  </div>
+</div>
+{/* Text div */}
+<div className="bg-black text-white flex justify-center items-center h-72 px-8">
+  <div className="flex items-center max-w-5xl w-full">
+    <h2 className="text-2xl font-bold whitespace-nowrap mr-6">Arrive Refreshed</h2>
+    <p className="text-sm leading-relaxed">
+      Autopilot enables your vehicle to steer, accelerate and brake automatically within its lane under your active supervision, assisting with the most burdensome parts of driving. With over-the-air software updates, the latest enhancements are available instantly.
+    </p>
+  </div>
+</div>
+{/* Model 3 Specs */}
+<div className="min-h-screen bg-black text-white px-4 md:px-8 py-12">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <h1 className="text-3xl md:text-4xl font-medium mb-10">Model 3 Specs</h1>
+        
+        {/* Range Tabs */}
+        <div className="flex border-b border-gray-700 mb-12">
+          <button 
+            className={`pb-2 px-2 ${selectedTab === 'awd' ? 'border-b-2 border-white' : 'text-gray-400'} mr-8`}
+            onClick={() => setSelectedTab('awd')}
+          >
+            Long Range AWD
+          </button>
+          <button 
+            className={`pb-2 px-2 ${selectedTab === 'rwd' ? 'border-b-2 border-white' : 'text-gray-400'}`}
+            onClick={() => setSelectedTab('rwd')}
+          >
+            Long Range RWD
+          </button>
+        </div>
+        
+        {/* Drive Section */}
+        <div className="mb-16">
+          <h2 className="text-2xl font-medium mb-8">Drive</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-y-6 gap-x-4">
+            <div>
+              <p className="text-gray-400 text-sm mb-1">Battery</p>
+              <p>Long Range</p>
+            </div>
+            
+            <div>
+              <p className="text-gray-400 text-sm mb-1">Range (EPA est.)</p>
+              <p>346 mi</p>
+            </div>
+            
+            <div>
+              <p className="text-gray-400 text-sm mb-1">Acceleration</p>
+              <p>4.2 s 0-60 mph</p>
+            </div>
+            
+            <div>
+              <p className="text-gray-400 text-sm mb-1">Drive</p>
+              <p>Dual Motor All-Wheel Drive</p>
+            </div>
+          </div>
+        </div>
+        
+        {/* Dimensions Section */}
+        <div className="mb-16 border-t border-gray-800 pt-16">
+          <h2 className="text-2xl font-medium mb-8">Dimensions</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-y-6 gap-x-4">
+            <div>
+              <p className="text-gray-400 text-sm mb-1">Weight (Curb Mass)</p>
+              <p>4,030 lbs</p>
+            </div>
+            
+            <div>
+              <p className="text-gray-400 text-sm mb-1">Cargo</p>
+              <p>24 cu ft</p>
+            </div>
+            
+            <div>
+              <p className="text-gray-400 text-sm mb-1">Wheels</p>
+              <p>18" or 19"</p>
+            </div>
+            
+            <div>
+              <p className="text-gray-400 text-sm mb-1">Seating</p>
+              <p>5 Adults</p>
+            </div>
+            
+            <div>
+              <p className="text-gray-400 text-sm mb-1">Displays</p>
+              <div>
+                <p>15.4" Center Touchscreen</p>
+                <p>8" Rear Touchscreen</p>
+              </div>
+            </div>
+            
+            <div>
+              <p className="text-gray-400 text-sm mb-1">Ground Clearance</p>
+              <p>5.4"</p>
+            </div>
+            
+            <div>
+              <p className="text-gray-400 text-sm mb-1">Overall Width</p>
+              <div>
+                <p>Folded mirrors: 76.1"</p>
+                <p>Extended mirrors: 82.2"</p>
+              </div>
+            </div>
+            
+            <div>
+              <p className="text-gray-400 text-sm mb-1">Overall Height</p>
+              <p>56.7"</p>
+            </div>
+            
+            <div>
+              <p className="text-gray-400 text-sm mb-1">Overall Length</p>
+              <p>185.8"</p>
+            </div>
+            
+            <div>
+              <p className="text-gray-400 text-sm mb-1">Track - Front & Rear</p>
+              <p>62.4" & 62.4"</p>
+            </div>
+          </div>
+
+          <div className="mt-8 flex justify-end">
+          <img
+              src={Dimensionimages[selectedTab]}
+              alt="Tesla Model 3 Dimensions"
+              className="w-full max-w-md"
+            />
+          </div>
+        </div>
+        
+        {/* Charging Section */}
+        <div className="mb-16 border-t border-gray-800 pt-16">
+          <h2 className="text-2xl font-medium mb-8">Charging</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-4">
+            <div>
+              <p className="text-gray-400 text-sm mb-1">Supercharging Max/Payment Type</p>
+              <p>250 kW Max; Pay Per Use</p>
+            </div>
+            
+            <div>
+              <p className="text-gray-400 text-sm mb-1">Charging Speed</p>
+              <p>Up to 185 miles added in 15 minutes<sup>1</sup></p>
+            </div>
+          </div>
+        </div>
+        
+        {/* Warranty Section */}
+        <div className="mb-16 border-t border-gray-800 pt-16">
+          <h2 className="text-2xl font-medium mb-8">Warranty</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-4">
+            <div>
+              <p className="text-gray-400 text-sm mb-1">Basic Vehicle</p>
+              <p>4 years or 50,000 mi, whichever comes first</p>
+            </div>
+            
+            <div>
+              <p className="text-gray-400 text-sm mb-1">Battery & Drive Unit</p>
+              <p>8 years or 120,000 mi, whichever comes first</p>
+              <button className="text-sm underline mt-2">See Details</button>
+            </div>
+          </div>
+        </div>
+        
+        {/* Other Section */}
+        <div className="mb-16 border-t border-gray-800 pt-16">
+          <h2 className="text-2xl font-medium mb-8">Other</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-4">
+            <div>
+              <button className="text-sm underline">Owner's Manual</button>
+            </div>
+            
+            <div>
+              <button className="text-sm underline">Compare Models</button>
+            </div>
+          </div>
+        </div>
+        
+        {/* Footnotes */}
+        <div className="text-xs text-gray-400 mt-12 border-t border-gray-800 pt-8">
+          <p><sup>1</sup>Range added in 15 minutes is based on constant speed data.</p>
+          <p className="mt-4">
+            Certain high data usage vehicle features require at least Standard Connectivity, including maps, navigation
+            and voice commands. Access to features that use cellular data and third-party licenses are subject to
+            change. Learn more about Standard Connectivity and any limitations.
+          </p>
+        </div>
+      </div>
+</div>
+{/* Last Section */}
+<div className="relative w-full h-screen">
+      {/* Background Image */}
+      <img 
+        src="https://digitalassets.tesla.com/tesla-contents/image/upload/f_auto,q_auto/Model-3-End-of-Page-Desktop-LHD.jpg"
+        alt="Tesla Model 3" 
+        className="w-full h-full object-cover"
+      />
+
+      {/* Text Content */}
+      <div className="absolute top-[80%] w-full text-center">
+        <h1 className="text-3xl font-semibold text-white">Model 3</h1>
+        <p className="text-lg text-gray-300">
+          Design your car or get a trade-in estimate for your current vehicle.
+        </p>
+      </div>
+
+      {/* Buttons */}
+      <div className="absolute bottom-[10%] w-full flex justify-center gap-4">
+        <Link to="/model3/order-now">
+          <button className="bg-blue-600 text-white px-6 py-2 rounded-md text-base font-medium hover:bg-blue-700">
+            Order Now
+          </button>
+        </Link>
+        <Link to="/model3/get-estimate">
+          <button className="bg-gray-800 text-white px-6 py-2 rounded-md text-base font-medium hover:bg-gray-900">
+            Get an Estimate
+          </button>
+        </Link>
+      </div>
+    </div>
+
+      </div>  
+{/* Footer */}
+      <footer className="bg-black text-gray-400 text-sm py-10">
+      <div className="container mx-auto flex flex-wrap justify-center gap-6">
+        <p className="text-gray-500">Tesla © 2025</p>
+        <Link to="/privacy" className="hover:text-white">Privacy & Legal</Link>
+        <Link to="/recalls" className="hover:text-white">Vehicle Recalls</Link>
+        <Link to="/contact" className="hover:text-white">Contact</Link>
+        <Link to="/news" className="hover:text-white">News</Link>
+        <Link to="/updates" className="hover:text-white">Get Updates</Link>
+        <Link to="/locations" className="hover:text-white">Locations</Link>
+      </div>
+    </footer>
     </div>
   );
 };

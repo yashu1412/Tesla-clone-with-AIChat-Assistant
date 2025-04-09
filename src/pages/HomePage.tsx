@@ -39,7 +39,7 @@ const Home = () => {
         </div>
 
             {/* Buttons */}
-            <div className="absolute bottom-[60%] w-full flex justify-center gap-4 front-roboto">
+            <div className="absolute bottom-[6%] w-full flex justify-center gap-4 front-roboto">
             <Link to="/model3/order-now">
               <button className="bg-blue-600 text-white px-8 py-3 rounded-md text-lg font-medium hover:bg-blue-700">
                 Order Now
@@ -68,12 +68,16 @@ const Home = () => {
 
         {/* Buttons */}
         <div className="absolute bottom-[5%] w-full flex justify-center gap-4 front-roboto">
+          <Link to="/modely/order-now">
           <button className="bg-blue-600 text-white px-8 py-3 rounded-md text-lg font-medium hover:bg-blue-700">
             Order Now
           </button>
+          </Link>
+          <Link to="/modely/learn-more">
           <button className="bg-white text-black px-8 py-3 rounded-md text-lg font-medium hover:bg-gray-100">
             Learn More
           </button>
+          </Link>
         </div>
    </div>
           {/* cybertruck */}
@@ -88,14 +92,15 @@ const Home = () => {
           <h1 className="text-2xl font-semibold text-white underline">1.99% APR Ending March 31</h1>
         </div>
 
-        {/* Content Overlay */}
-        <div className="absolute top-[14%] w-full flex-col justify-between items-center">
-        <img 
-          src={CyberTruckText} 
-          alt="Tesla Model 3" 
-          className="w-[400px] h-[110px] object-cover text-center translate-x-[150%] "
-        />
-        </div>
+{/* Content Overlay */}
+<div className="absolute top-[14%] w-full flex justify-center items-center">
+  <img 
+    src={CyberTruckText} 
+    alt="Tesla Model 3" 
+    className="w-[400px] h-[110px] object-cover"
+  />
+</div>
+
 
 {/* Buttons */}
 <div className="absolute bottom-[5%] w-full flex flex-col items-center gap-4 font-roboto">
@@ -104,12 +109,16 @@ const Home = () => {
     <h1 className="text-base font-normal text-white">Overall NHTSA Safety Rating</h1>
   </div>
   <div className='space-x-4'>
+    <Link to="/cybertruck/order-now">
   <button className="bg-black text-gray-500 px-20 py-2 text-base font-medium hover:bg-gray-100">
     Order Now
   </button>
+  </Link>
+  <Link to="/cybertruck/learn-more">
   <button className="bg-black text-gray-500 px-20 py-2 text-base font-medium hover:bg-gray-100">
     Learn More
   </button>
+  </Link>
   </div>
 </div>
 
