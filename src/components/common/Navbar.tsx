@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect  } from "react";
 import { Link } from "react-router-dom";
-import { HelpCircle, Globe, User, Menu, X } from "lucide-react";
+import { HelpCircle, Globe, User, Menu, X, LayoutDashboard } from "lucide-react";
 import NavDropdown from "../custom/Navbar/NavDropdown";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
+import { useAuth } from "../custom/Auth/AuthContext";
 
 const Navbar: React.FC = () => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -9,29 +13,35 @@ const Navbar: React.FC = () => {
   const [closeTimeout, setCloseTimeout] = useState<NodeJS.Timeout | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isModel3LearnMorePage, setIsModel3LearnMorePage] = useState(false);
+  const navigate = useNavigate();
+  const { token, user } = useSelector((state: RootState) => state.auth);
+  const { logout } = useAuth();
+
+  console.log('Token state:', token); // Debug log
+  console.log('User state:', user); // Debug log
 
   const vehicleLinks = [
     { 
       title: "Model S", 
-      path: "/model-s",
+      path: "/models",
       image: "https://digitalassets.tesla.com/tesla-contents/image/upload/f_auto,q_auto/Mega-Menu-Vehicles-Model-S.png",
       hasLearnOrder: true
     },
     { 
       title: "Model 3", 
-      path: "/model-3",
+      path: "/model3",
       image: "https://digitalassets.tesla.com/tesla-contents/image/upload/f_auto,q_auto/Mega-Menu-Vehicles-Model-3-LHD.png",
       hasLearnOrder: true
     },
     { 
       title: "New Model Y", 
-      path: "/model-y",
+      path: "/modely",
       image: "https://digitalassets.tesla.com/tesla-contents/image/upload/f_auto,q_auto/Mega-Menu-Vehicles-Model-Y.png",
       hasLearnOrder: true
     },
     { 
       title: "Model X", 
-      path: "/model-x",
+      path: "/modelx",
       image: "https://digitalassets.tesla.com/tesla-contents/image/upload/f_auto,q_auto/Mega-Menu-Vehicles-Model-X.png",
       hasLearnOrder: true
     },
@@ -65,7 +75,7 @@ const Navbar: React.FC = () => {
     },
     { 
       title: "Solar Roof", 
-      path: "/solar-roof",
+      path: "/solarroof",
       image: "https://digitalassets.tesla.com/tesla-contents/image/upload/f_auto,q_auto/Mega-Menu-Energy-Solar-Roof.png",
       hasLearnOrder: true
     },
@@ -126,28 +136,10 @@ const Navbar: React.FC = () => {
     {
       title: "Resources",
       links: [
-        { title: "Demo Drive", path: "/demo-drive" },
-        { title: "Insurance", path: "/insurance" },
-        { title: "Military Purchase Program", path: "/military-program" },
-        { title: "Video Guides", path: "/video-guides" },
-        { title: "Customer Stories", path: "/customer-stories" },
-        { title: "Events", path: "/events" },
-      ]
-    },
-    {
-      title: "Location Services",
-      links: [
-        { title: "Find Us", path: "/find-us" },
-        { title: "Find a Collision Center", path: "/collision-center" },
-        { title: "Find a Certified Installer", path: "/certified-installer" },
-      ]
-    },
-    {
-      title: "Company",
-      links: [
-        { title: "About", path: "/about" },
-        { title: "Careers", path: "/careers" },
-        { title: "Investor Relations", path: "/investor-relations" },
+        { title: "Demo Drive", path: "/test-drive" },
+        { title: "Help Me", path: "/help-me" },
+        { title: "Chat with Us", path: "/chat" },
+        { title: "About", path: "/about" }
       ]
     }
   ];
@@ -221,6 +213,17 @@ const Navbar: React.FC = () => {
   useEffect(() => {
     setIsModel3LearnMorePage(window.location.pathname.includes("model3/learn-more"));
   }, []);
+
+  // Add effect to handle navigation based on auth status
+  useEffect(() => {
+    const currentPath = window.location.pathname;
+    if (token && currentPath === '/login') {
+      navigate('/dashboard');
+    } else if (!token && currentPath === '/dashboard') {
+      navigate('/login');
+    }
+  }, [token, navigate]);
+
   if (isModel3LearnMorePage && isScrolled) {
     return (
       <nav className="fixed top-0 left-0 w-full z-50 bg-black/20 backdrop-blur-md">
@@ -254,10 +257,10 @@ const Navbar: React.FC = () => {
 
   return (
     <div className="relative">
-      <nav className="fixed top-0 left-0 w-full flex items-center justify-between px-4 md:px-8 py-3 bg-transparent text-white z-50">
+      <nav className="fixed top-0 left-0 w-full flex items-center justify-between px-4 py-3 bg-black/20 backdrop-blur-md text-white z-50">
         {/* Logo */}
         <div className="text-2xl font-bold">
-          <Link to="/" className="tracking-widest">
+          <Link to={token ? "/dashboard" : "/"} className="tracking-widest">
             <svg className="h-3 w-28" viewBox="0 0 342 35" xmlns="http://www.w3.org/2000/svg">
               <path d="M0 .1a9.7 9.7 0 0 0 7 7h11l.5.1v27.6h6.8V7.3L26 7h11a9.8 9.8 0 0 0 7-7H0zm238.6 0h-6.8v34.8H263a9.7 9.7 0 0 0 6-6.8h-30.3V0zm-52.3 6.8c3.6-1 6.6-3.8 7.4-6.9l-38.1.1v20.6h31.1v7.2h-24.4a13.6 13.6 0 0 0-8.7 7h39.9v-21h-31.2v-7h24zm116.2 28h6.7v-14h24.6v14h6.7v-21h-38zM85.3 7h26a9.6 9.6 0 0 0 7.1-7H78.3a9.6 9.6 0 0 0 7 7zm0 13.8h26a9.6 9.6 0 0 0 7.1-7H78.3a9.6 9.6 0 0 0 7 7zm0 14.1h26a9.6 9.6 0 0 0 7.1-7H78.3a9.6 9.6 0 0 0 7 7zM308.5 7h26a9.6 9.6 0 0 0 7-7h-40a9.6 9.6 0 0 0 7 7z" fill="currentColor"></path>
             </svg>
@@ -328,40 +331,100 @@ const Navbar: React.FC = () => {
             />
           </div>
 
-          {/* Shop Dropdown */}
-          <div 
-            className="relative py-2 hover:bg-black/5 px-4 rounded-md transition-colors"
-            onMouseEnter={() => handleMouseEnter('shop')}
-            onMouseLeave={handleMouseLeave}
-          >
-            <button className="cursor-pointer">Shop</button>
-            <NavDropdown 
-              isActive={activeDropdown === 'shop'} 
-              links={shopLinks}
-              onMouseEnter={handleDropdownMouseEnter}
-              onMouseLeave={handleDropdownMouseLeave}
-            />
-          </div>
+{/* Shop Dropdown */}
+<div 
+  className="relative py-2 hover:bg-black/5 px-4 rounded-md transition-colors"
+  onMouseEnter={() => handleMouseEnter('shop')}
+  onMouseLeave={handleMouseLeave}
+>
+  <button
+    className="cursor-pointer"
+    onClick={() => navigate('/tesla-shop')}
+  >
+    Shop
+  </button>
+
+  <NavDropdown 
+    isActive={activeDropdown === 'shop'} 
+    links={shopLinks}
+    onMouseEnter={handleDropdownMouseEnter}
+    onMouseLeave={handleDropdownMouseLeave}
+  />
+</div>
+
         </div>
 
-        {/* Right Icons */}
-        <div className="flex items-center gap-1 lg:gap-3 text-base">
-          <button className="p-2 rounded-full hover:bg-black/5 transition-colors">
-            <HelpCircle size={20} />
-          </button>
-          <button className="p-2 rounded-full hover:bg-black/5 transition-colors">
-            <Globe size={20} />
-          </button>
-          <button className="p-2 rounded-full hover:bg-black/5 transition-colors">
-            <User size={20} />
-          </button>
-          <button 
-            className="md:hidden p-2 rounded-full hover:bg-black/5 transition-colors"
-            onClick={toggleMobileMenu}
-          >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
+{/* Right Icons */}
+<div className="flex items-center gap-1 lg:gap-3 text-base">
+  <button 
+    onClick={() => navigate('/help-me')}
+    className="p-2 rounded-full hover:bg-black/5 transition-colors"
+  >
+    <HelpCircle size={20} />
+  </button>
+  <button 
+  onClick={() => navigate('/tesla-chat-bot')}
+  className="p-2 rounded-full hover:bg-black/5 transition-colors">
+    <Globe size={20} />
+  </button>
+  {token ? (
+    <div className="flex items-center gap-2">
+      {/* <button 
+        onClick={() => navigate('/dashboard')}
+        className="p-2 rounded-full hover:bg-black/5 transition-colors"
+        title="Dashboard"
+      >
+        <LayoutDashboard size={20} />
+      </button> */}
+      <button 
+        onClick={() => navigate('/dashboard')}
+        className="p-2 rounded-full hover:bg-black/5 transition-colors"
+        title="Profile"
+      >
+        <User size={20} />
+      </button>
+      <button 
+        onClick={() => {
+          logout();
+          navigate('/login');
+        }}
+        className="p-2 rounded-full hover:bg-black/5 transition-colors"
+        title="Logout"
+      >
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          width="20" 
+          height="20" 
+          viewBox="0 0 24 24" 
+          fill="none" 
+          stroke="currentColor" 
+          strokeWidth="2" 
+          strokeLinecap="round" 
+          strokeLinejoin="round"
+        >
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+      </button>
+    </div>
+  ) : (
+    <button 
+      onClick={() => navigate('/login')}
+      className="p-2 rounded-full hover:bg-black/5 transition-colors"
+      title="Login"
+    >
+      <User size={20} />
+    </button>
+  )}
+  <button 
+    className="md:hidden p-2 rounded-full hover:bg-black/5 transition-colors"
+    onClick={toggleMobileMenu}
+  >
+    {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+  </button>
+</div>
+
       </nav>
 
       {/* Mobile Menu */}
@@ -373,6 +436,20 @@ const Navbar: React.FC = () => {
             <Link to="/charging" className="py-2 px-4 text-lg border-b">Charging</Link>
             <Link to="/discover" className="py-2 px-4 text-lg border-b">Discover</Link>
             <Link to="/shop" className="py-2 px-4 text-lg border-b">Shop</Link>
+            {token ? (
+              <Link to="/dashboard/profile" className="py-2 px-4 text-lg border-b">
+                Profile
+              </Link>
+            ) : (
+              <>
+                <Link to="/login" className="py-2 px-4 text-lg border-b">
+                  Login
+                </Link>
+                <Link to="/signup" className="py-2 px-4 text-lg border-b">
+                  Sign Up
+                </Link>
+              </>
+            )}
             
             <div className="py-4">
               <h3 className="text-lg font-medium mb-2">Vehicles</h3>
