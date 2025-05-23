@@ -61,7 +61,8 @@ A modern web application that replicates Tesla's user experience with additional
 *E-commerce interface showcasing Tesla accessories and merchandise*
 
 ### Razorpay interphase
-![Screenshot 2025-05-23 154502](https://github.com/user-attachments/assets/40f7cf51-a1df-44da-910e-5891d41d5ca2)
+![Screenshot 2025-05-23 155040](https://github.com/user-attachments/assets/d1491b21-9f5b-43d3-9aef-07a779896186)
+
 
 ## Tech Stack & Integrations
 
