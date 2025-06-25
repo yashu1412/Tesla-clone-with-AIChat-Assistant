@@ -26,7 +26,6 @@ import ProfileEdit from './pages/ProfileEdit';
 import ProductDetails from "./components/Shoping/Custom/ProductDetails";
 import Cart from "./components/Shoping/Custom/Cart";
 import CategoryPage from "./components/Shoping/Custom/CategoryPage";
-// Add this import with other component imports
 import Product from "./components/custom/dashboard/Admin/Product";
 // Import TeslaChatbot component
 import TeslaChatbot from "./pages/TeslaChatbot";
@@ -43,15 +42,13 @@ import PowerWallLearnMore from './components/custom/Home/PawerWall/PowerWallLear
 import Charging from './components/custom/Charging/ChargingLearnMore';
 import MegaPack from './components/custom/MegaPack/MegaPackLearnMore';
 
-import path from 'path'; // Remove if unused
-
 // Create React Query Client
 const queryClient = new QueryClient();
 
 // Import the PaymentSuccess component
 import PaymentSuccess from "./components/Shoping/Custom/Cart/PaymentSuccess";
 import OrderNowPage from './pages/OrderNowPage';
-// Add this import
+
 import SubcategoryPage from "./components/Shoping/Custom/SubcategoryPage";
 
 // Shoping Subcategory Pages
