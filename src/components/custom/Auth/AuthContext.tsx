@@ -30,7 +30,7 @@ interface SignupData {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const API_BASE_URL = 'http://localhost:4001/api/v1';
+const API_BASE_URL = 'https://tesla-clone-with-aichat-assistant.onrender.com/api/v1';
 
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
