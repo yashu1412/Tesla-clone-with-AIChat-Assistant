@@ -9,7 +9,7 @@ import Footer from "../../../common/Footer";
 
 // Asset Imports
 import video1 from "../../../../Assets/model3/HeroVideo1.mp4";
-import video2 from "../../../../Assets/model3/HeroVideo2.mp4";
+import video2 from "../../../../Assets/model3/heroVideo2.mp4";
 import video3 from "../../../../Assets/model3/Model-3-Interior.mp4";
 import video4 from "../../../../Assets/model3/feature-video.mp4";
 import Cabin from "../../../../Assets/model3/cabin.jpg";
