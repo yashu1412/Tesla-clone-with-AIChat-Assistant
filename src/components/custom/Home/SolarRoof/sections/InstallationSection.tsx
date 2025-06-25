@@ -1,7 +1,20 @@
 import type React from 'react';
 import Section from '../layout/Section';
-
+import { useNavigate } from 'react-router-dom'
 const InstallationSection: React.FC = () => {
+      const navigate = useNavigate();
+    
+      const handleOrderNow = () => {
+        navigate('/order-now', {
+          state: {
+            productDetails: {
+              id: 'solar-roof-2024',
+              name: 'Tesla Solar Roof',
+              price: 15000 // Base price for solar roof
+            }
+          }
+        });
+      };
   return (
     <Section id="installation" className="bg-black text-white py-32 min-h-0">
       <div className="max-w-6xl mx-auto">

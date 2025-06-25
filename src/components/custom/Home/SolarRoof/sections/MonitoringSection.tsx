@@ -1,6 +1,19 @@
 import React from 'react';
-
+import { useNavigate } from 'react-router-dom';
 const OptimizeSection: React.FC = () => {
+      const navigate = useNavigate();
+  
+      const handleOrderNow = () => {
+        navigate('/order-now', {
+          state: {
+            productDetails: {
+              id: 'solar-roof-2024',
+              name: 'Tesla Solar Roof',
+              price: 15000 // Base price for solar roof
+            }
+          }
+        });
+      };
   return (
     <section className="bg-black text-white flex flex-col lg:flex-row h-screen">
       {/* Left - Text Content */}
@@ -19,7 +32,7 @@ const OptimizeSection: React.FC = () => {
         {/* Button */}
         <div>
           <a
-            href="#"
+            onClick={handleOrderNow}
             className="block text-center border border-white py-2 px-4 hover:bg-white hover:text-black transition"
           >
             Order Now

@@ -4,22 +4,22 @@ const InteriorSection: React.FC = () => {
   return (
     <section className="relative bg-black text-white py-20">
       <div className="tesla-container max-w-7xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-medium text-center mb-16">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium text-center mb-8 sm:mb-12 md:mb-16">
           Interior of the Future
         </h2>
 
         {/* First Row: Image Left - Text Right */}
-        <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-10 mb-16 px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-6 sm:gap-8 md:gap-10 mb-8 sm:mb-12 md:mb-16 px-4">
           <div>
             <img
-              src="https://digitalassets.tesla.com/tesla-contents/image/upload/f_auto,q_auto/Model-X-Interior-Grid-B-DMT.jpg" // Replace with actual path
+              src="https://digitalassets.tesla.com/tesla-contents/image/upload/f_auto,q_auto/Model-X-Interior-Grid-B-DMT.jpg"
               alt="Interior Console"
               className="w-full h-auto object-cover rounded-lg"
             />
           </div>
           <div>
-            <h3 className="text-xl font-semibold mb-3">Stay Connected</h3>
-            <p className="text-sm text-gray-300">
+            <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">Stay Connected</h3>
+            <p className="text-xs sm:text-sm md:text-base text-gray-300">
               Instantly connect with multi-device Bluetooth, or fast charge devices with wireless and 36-watt USB-C charging.
             </p>
           </div>

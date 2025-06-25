@@ -1,8 +1,21 @@
 import React from 'react';
-import Section from '../layout/Section';
+import Section from './Section';
 import Button from '../ui/Button';
-
+import { useNavigate } from 'react-router-dom';
 const CTASection: React.FC = () => {
+      const navigate = useNavigate();
+    
+      const handleOrderNow = () => {
+        navigate('/order-now', {
+          state: {
+            productDetails: {
+              id: 'megapack-2024',
+              name: 'Tesla Megapack',
+              price: 123000 // Base price for Megapack
+            }
+          }
+        });
+      };
   return (
     <Section id="cta" className="bg-black text-white py-32 text-center">
       <div className="max-w-xl mx-auto px-4">
@@ -14,12 +27,16 @@ const CTASection: React.FC = () => {
         </p>
         <div className="flex flex-col items-center gap-4">
           <Button
+          onClick={handleOrderNow}
             variant="outline"
-            className="w-56 border-white text-white hover:bg-white hover:text-black"
+            className="w-56 border-white text-white hover:bg-white "
           >
             Order Now
           </Button>
-          <Button className="w-56 bg-neutral-800 text-white hover:bg-neutral-700">
+          <Button 
+            onClick={() => navigate('/help-me')}
+            className="w-56 bg-neutral-800 text-black hover:text-white hover:bg-neutral-700"
+          >
             Contact Us
           </Button>
         </div>

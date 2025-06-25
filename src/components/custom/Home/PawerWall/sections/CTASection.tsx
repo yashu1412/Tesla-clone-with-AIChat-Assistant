@@ -1,8 +1,21 @@
 import React from 'react';
 import Section from '../layout/Section';
 import Button from '../ui/Button';
-
+import { useNavigate } from 'react-router-dom';
 const CTASection: React.FC = () => {
+        const navigate = useNavigate();
+      
+        const handleOrderNow = () => {
+          navigate('/order-now', {
+            state: {
+              productDetails: {
+                id: 'powerwall-3-2024',
+                name: 'Tesla PowerWall 3',
+                price: 8400 // Base price for PowerWall 3
+              }
+            }
+          });
+        };
   return (
     <Section id="cta" className="relative w-full h-[80vh] overflow-hidden">
       {/* Background Image */}
@@ -24,8 +37,11 @@ const CTASection: React.FC = () => {
         Order now or schedule a call with a Tesla Advisor to learn more. Get Energy Updates
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
-          <Button>Order PowerWall 3</Button>
-          <Button variant="outline">Schedule a Call</Button>
+          <Button 
+          onClick={handleOrderNow}
+          >Order PowerWall 3</Button>
+          <Button
+          href='https://www.tesla.com/solar-virtual-consultations' variant="outline">Schedule a Call</Button>
         </div>
       </div>
     </Section>

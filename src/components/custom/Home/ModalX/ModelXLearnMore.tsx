@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FaPause, FaPlay, FaVolumeMute, FaVolumeUp, FaExpand } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link , useNavigate } from "react-router-dom";
 import Header from './layout/Header';
 import Hero from './sections/Hero';
 import InteriorSection from './sections/InteriorSection';
@@ -105,7 +105,19 @@ function ModelYLearnMore() {
       videoRef.current.play();
       setIsPlaying(true);
     }, [activeIndex]);
-  
+    const navigate = useNavigate();
+
+  const handleOrderNow = () => {
+    navigate('/order-now', {
+      state: {
+        productDetails: {
+          id: 'modelx-2024',
+          name: 'Tesla Model X',
+          price: 79990 // Base price for Model X
+        }
+      }
+    });
+  };
   return (
     <div className="relative w-full">
       <Header />
@@ -122,7 +134,7 @@ function ModelYLearnMore() {
         {/* Hero Video section */}
 <div className="relative w-full h-screen flex flex-col items-center justify-center bg-black">
   {/* Video Container */}
-  <div className="relative w-[75%] h-[60%] mx-auto overflow-hidden rounded-xl shadow-lg">
+  <div className="relative w-[85%] sm:w-[80%] md:w-[75%] h-[50%] sm:h-[55%] md:h-[60%] mx-auto overflow-hidden rounded-xl shadow-lg">
     <video
       ref={videoRef}
       className="w-full h-full object-cover"
@@ -179,9 +191,9 @@ function ModelYLearnMore() {
   </div>
 
   {/* Text Content */}
-  <div className="text-center text-white mt-6 max-w-xl">
-    <h2 className="text-2xl font-bold">{videoData[activeIndex].title}</h2>
-    <p className="text-sm mt-2 text-gray-300">{videoData[activeIndex].description}</p>
+  <div className="text-center text-white mt-4 sm:mt-6 max-w-xl px-4">
+    <h2 className="text-xl sm:text-2xl font-bold">{videoData[activeIndex].title}</h2>
+    <p className="text-xs sm:text-sm mt-2 text-gray-300">{videoData[activeIndex].description}</p>
   </div>
 </div>
 
@@ -195,36 +207,45 @@ function ModelYLearnMore() {
   />
 
   {/* Performance Metrics */}
-  <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col md:flex-row items-center justify-center gap-32 text-white text-center">
-    <div>
-      <h3 className="text-4xl font-semibold">1,020 <span className="text-sm font-normal">hp</span></h3>
-      <p className="text-xl font-medium opacity-70">Peak Power</p>
+  <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col md:flex-row items-center justify-center gap-8 sm:gap-16 md:gap-32 text-white text-center">
+    <div className="mb-4 md:mb-0">
+      <h3 className="text-2xl sm:text-3xl md:text-4xl font-semibold">1,020 <span className="text-xs sm:text-sm font-normal">hp</span></h3>
+      <p className="text-base sm:text-lg md:text-xl font-medium opacity-70">Peak Power</p>
+    </div>
+    <div className="mb-4 md:mb-0">
+      <h3 className="text-2xl sm:text-3xl md:text-4xl font-semibold">9.9 <span className="text-xs sm:text-sm font-normal">s</span></h3>
+      <p className="text-base sm:text-lg md:text-xl font-medium opacity-70">1/4 Mile</p>
     </div>
     <div>
-      <h3 className="text-4xl font-semibold">9.9 <span className="text-sm font-normal">s</span></h3>
-      <p className="text-xl font-medium opacity-70">1/4 Mile</p>
-    </div>
-    <div>
-      <h3 className="text-4xl font-semibold">2.5 <span className="text-sm font-normal">s</span></h3>
-      <p className="text-xl font-medium opacity-70">0-60 mph</p>
+      <h3 className="text-2xl sm:text-3xl md:text-4xl font-semibold">2.5 <span className="text-xs sm:text-sm font-normal">s</span></h3>
+      <p className="text-base sm:text-lg md:text-xl font-medium opacity-70">0-60 mph</p>
     </div>
   </div>
 </div>
 {/* Content Section */}
-<div className="flex flex-col md:flex-row items-start justify-between px-8 md:px-20 py-12 w-[1500px] mx-auto">
-  <div className="md:w-1/2">
-    <p className="uppercase text-base font-medium tracking-wide mb-1">Plaid</p>
-    <h2 className="text-3xl font-semibold mb-6">Beyond Ludicrous</h2>
-    <div className="flex gap-4">
-      <button className="px-12 py-2 border-4 rounded-sm border-black font-medium hover:bg-black hover:text-white transition">Order Now</button>
-      <button className="px-12 py-2 border-4 rounded-sm border-black bg-gray-100 text-black font-medium hover:bg-gray-200 transition">Demo Drive</button>
+<div className="flex flex-col md:flex-row items-start justify-between px-4 sm:px-6 md:px-12 lg:px-20 py-6 sm:py-8 md:py-12 w-full max-w-[1500px] mx-auto">
+  <div className="w-full md:w-1/2 mb-6 md:mb-0">
+    <p className="uppercase text-sm sm:text-base font-medium tracking-wide mb-1">Plaid</p>
+    <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-4 sm:mb-6">Beyond Ludicrous</h2>
+    <div className="flex gap-3 sm:gap-4">
+    <button 
+            onClick={handleOrderNow}
+            className="bg-gray-700 border-2 border-gray-200 text-white px-8 py-2 rounded-md text-base font-semibold hover:bg-gray-900 transition-all duration-300"
+          >
+            Order Now
+          </button>
+          <Link to="/test-drive">
+                  <button className="w-full border-2 border-black bg-white text-black px-8 py-2 rounded-md text-base font-semibold hover:bg-gray-100 transition-all duration-300">
+                    Demo Drive
+                  </button>
+                </Link>
     </div>
   </div>
-  <div className="md:w-1/2 text-lg font-medium text-gray-700">
-    <p>
+  <div className="w-full md:w-1/2">
+    <p className="text-base sm:text-lg font-medium text-gray-700">
       With the most power and quickest acceleration of any SUV, Model X Plaid is the highest performing SUV ever built. Updated battery architecture enables both Long Range and Plaid configurations to complete back-to-back track runs without performance degradation.
-      <a href="#" className="underline ml-1">Chat with a Tesla Advisor</a> to learn more about Model X or
-      <a href="#" className="underline ml-1">schedule a demo drive</a> today.
+      <a href="#" className="underline ml-1 hover:text-gray-900">Chat with a Tesla Advisor</a> to learn more about Model X or
+      <a href="#" className="underline ml-1 hover:text-gray-900">schedule a demo drive</a> today.
     </p>
   </div>
 </div>
@@ -339,14 +360,15 @@ function ModelYLearnMore() {
         
               {/* Buttons */}
               <div className="absolute bottom-[5%] w-full flex justify-center gap-4">
-                <Link to="/order-now">
-                  <button className="bg-blue-600 text-white px-6 py-2 rounded-md text-base font-medium hover:bg-blue-700">
-                    Order Now
-                  </button>
-                </Link>
-                <Link to="/get-estimate">
-                  <button className="bg-gray-800 text-white px-6 py-2 rounded-md text-base font-medium hover:bg-gray-900">
-                    Get an Estimate
+              <button 
+            onClick={handleOrderNow}
+            className="bg-blue-600 text-white px-10 py-3 rounded-md text-xl font-bold hover:bg-blue-700"
+          >
+            Order Now
+          </button>
+                <Link to="/test-drive">
+                  <button className="w-full md:w-auto bg-white text-black px-8 md:px-12 py-2 md:py-3 rounded-md text-base md:text-lg font-semibold hover:bg-gray-100 transition-all duration-300">
+                    Demo Drive
                   </button>
                 </Link>
               </div>

@@ -1,8 +1,22 @@
 import type React from 'react';
-import Section from '../layout/Section';
+import Section from './Section';
 import Button from '../ui/Button';
+import {Link ,  useNavigate} from 'react-router-dom';
 
 const HeroSection: React.FC = () => {
+      const navigate = useNavigate();
+    
+      const handleOrderNow = () => {
+        navigate('/order-now', {
+          state: {
+            productDetails: {
+              id: 'megapack-2024',
+              name: 'Tesla Megapack',
+              price: 123000 // Base price for Megapack
+            }
+          }
+        });
+      };
   return (
     <Section id="hero" className="relative text-black overflow-hidden h-screen">
       {/* Video background */}
@@ -43,7 +57,9 @@ const HeroSection: React.FC = () => {
               <div className="text-lg sm:text-xl font-semibold">3.9 MWh</div>
               <div className="text-gray-800">Per Unit</div>
             </div>
-            <Button variant="outline" className="border-black text-black hover:bg-black hover:text-white transition">
+            <Button 
+             onClick={handleOrderNow}
+             variant="outline" className="border-black text-black hover:bg-black hover:text-white transition">
               Order Now
             </Button>
           </div>

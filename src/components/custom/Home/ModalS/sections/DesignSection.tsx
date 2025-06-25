@@ -1,6 +1,18 @@
 import type React from 'react';
-
+import { useNavigate } from 'react-router-dom';
 const ExteriorSection: React.FC = () => {
+  const navigate = useNavigate();
+  const handleOrderNow = () => {
+    navigate('/order-now', {
+      state: {
+        productDetails: {
+          id: 'models-2024',
+          name: 'Tesla Model S',
+          price: 74990 // Base price for Model S
+        }
+      }
+    });
+  };
   return (
     <section className="relative bg-black text-white py-20">
       <div className="tesla-container max-w-7xl mx-auto">
@@ -23,8 +35,12 @@ const ExteriorSection: React.FC = () => {
     <h2 className="text-3xl md:text-4xl font-semibold text-white mt-1">Designed for Efficiency</h2>
   </div>
   <div className="flex gap-3 mt-6 md:mt-0">
-    <button className="bg-white text-black text-sm font-semibold px-6 py-2 rounded-sm">Order Now</button>
-    <button className="bg-[#222] text-white text-sm font-semibold px-6 py-2 rounded-sm">Demo Drive</button>
+    <button
+                onClick={handleOrderNow}
+                className="bg-white text-black text-sm font-semibold px-6 py-2 rounded-sm">Order Now</button>
+    <button 
+                onClick={() => navigate('/test-drive')}
+                className="bg-[#222] text-white text-sm font-semibold px-6 py-2 rounded-sm">Demo Drive</button>
   </div>
 </div>
 

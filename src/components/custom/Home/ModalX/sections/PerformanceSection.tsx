@@ -14,17 +14,17 @@ const PerformanceSection: React.FC = () => {
 
       {/* Content Container */}
       <div className="tesla-container relative z-10 flex flex-col items-start max-w-4xl">
-        <h2 className="text-4xl md:text-5xl font-medium mb-6">Beyond Ludicrous</h2>
-        <p className="text-lg mb-10 max-w-2xl">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium mb-4 sm:mb-6">Beyond Ludicrous</h2>
+        <p className="text-base sm:text-lg mb-6 sm:mb-10 max-w-2xl">
           With the most power and quickest acceleration of any SUV, Model X Plaid is the highest performing SUV ever built.
           Updated battery architecture enables both Long Range and Plaid configurations to complete back-to-back track runs without performance degradation.
         </p>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 w-full mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-10 w-full mb-6 sm:mb-10">
           <div className="flex flex-col">
-            <span className="text-3xl font-medium mb-1">1,020 hp</span>
-            <span className="text-sm text-gray-400">Peak Power</span>
+            <span className="text-xl sm:text-2xl md:text-3xl font-medium mb-1">1,020 hp</span>
+            <span className="text-xs sm:text-sm text-gray-400">Peak Power</span>
           </div>
 
           <div className="flex flex-col">

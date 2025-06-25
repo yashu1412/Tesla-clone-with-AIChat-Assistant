@@ -1,6 +1,19 @@
 import React from 'react';
-
+import { useNavigate } from 'react-router-dom' 
 const DurabilitySection: React.FC = () => {
+    const navigate = useNavigate();
+  
+    const handleOrderNow = () => {
+      navigate('/order-now', {
+        state: {
+          productDetails: {
+            id: 'solar-roof-2024',
+            name: 'Tesla Solar Roof',
+            price: 15000 // Base price for solar roof
+          }
+        }
+      });
+    };
   return (
     <section className="flex flex-col-reverse lg:flex-row h-screen">
       {/* Left Column - Video */}
@@ -36,7 +49,7 @@ const DurabilitySection: React.FC = () => {
         {/* Buttons */}
         <div className="space-y-4">
           <a
-            href="#"
+            onClick={handleOrderNow}
             className="block text-center border-4 border-black py-2 px-10 text-2xl font-medium rounded hover:bg-black hover:text-white transition"
           >
             Order Now

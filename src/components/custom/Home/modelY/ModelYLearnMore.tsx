@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
-import { Battery, Gauge, Wind, Timer, Maximize2, Shield, Car } from 'lucide-react';
+import { Link , useNavigate } from "react-router-dom";
+// import { Battery, Gauge, Wind, Timer, Maximize2, Shield, Car } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import { FaVolumeUp, FaWifi } from "react-icons/fa";
 import { FaCarSide, FaEye, FaCamera } from "react-icons/fa";
 import { MdEventSeat } from "react-icons/md";
+import { useToast } from "@/hooks/use-toast";
+import emailjs from '@emailjs/browser';
+
 import 'swiper/css';
 import 'swiper/css/navigation';
 import Footer from './modelyFooter';
@@ -16,7 +19,7 @@ const carFeatures = [
   {
     title: "Even Quieter",
     description: "An updated wheel and tire package offers a smoother driving experience. Redesigned body castings reduce parts from 70 to 1 for fewer gaps. All to create a whisper-quiet ride.",
-    image: "https://digitalassets.tesla.com/tesla-contents/image/upload/f_auto,q_auto/Model-Y-2-Redesigned-Carousel-Slide-1-Quieter-Desktop.png", // Replace with actual image URLs
+    image: "https://digitalassets.tesla.com/tesla-contents/image/upload/f_auto,q_auto/Model-Y-2-Hero-Desktop.jpg", // Replace with actual image URLs
   },
   {
     title: "More Efficient",
@@ -85,16 +88,77 @@ const sections = [
     ),
   },
 ];
+// ... existing code ...
+
+// Add EmailJS configuration at the top
+const SERVICE_ID = "service_gw2oxa7";
+const TEMPLATE_ID = "template_uvekrvf";
+const PUBLIC_KEY = "sqGW6vx44Rb-WOqlF";
+
 function App() {
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    name: '',
     email: '',
-    phone: '',
-    zipCode: '',
-    consent: false
+    subject: '',
+    message: ''
   });
-  
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    const emailData = {
+      from_name: formData.name,
+      from_email: formData.email,
+      to_email: formData.email,
+      subject: formData.subject,
+      message: formData.message,
+      to_name: "Tesla Support",
+      customer_support_email: 'teslaSupport@example.com',
+      customer_support_phone: '123-456-7890'
+    };
+
+    try {
+      const response = await emailjs.send(
+        SERVICE_ID,
+        TEMPLATE_ID,
+        emailData,
+        PUBLIC_KEY
+      );
+
+      console.log('Email sent successfully!', response.status, response.text);
+      
+      toast({
+        title: "Success!",
+        description: "Your message has been sent successfully.",
+      });
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    } catch (error) {
+      console.error('Failed to send email:', error);
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleOrderNow = () => {
+    navigate('/order-now', {
+      state: {
+        productDetails: {
+          id: 'modely-2024',
+          name: 'Tesla Model y',
+          price: 45240 // Base price for Model 3
+        }
+      }
+    });
+  };
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
@@ -113,65 +177,66 @@ function App() {
         <div className="absolute inset-0 bg-black bg-opacity-20" />
         {/* Content Overlay */}
         <div className="absolute top-[12%] w-full text-center">
-          <h1 className="text-5xl md:text-9xl font-bold text-white">New Model Y</h1>
-          <h1 className="text-4xl font-semibold text-white ">$7,500 Federal Tax Credit at Purchase</h1>
+          <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white">New Model Y</h1>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold text-white mt-2">$7,500 Federal Tax Credit at Purchase</h1>
         </div>
 
-        {/* Buttons */}
-        <div className="absolute bottom-[65%] w-full flex justify-center gap-4 front-roboto ">
-          <Link to="/modely/order-now">
-          <button className="bg-blue-600 text-white px-24 py-3 rounded-md text-xl font-bold hover:bg-blue-700">
-            Order Now
-          </button>
-          </Link>
-          <Link to="/modely/learn-more">
-          <button className="bg-white text-black px-24 py-3 rounded-md text-xl font-bold hover:bg-gray-100">
-            Demo Drive
-          </button>
+        {/* Buttons - Moved lower and made responsive */}
+        <div className="absolute bottom-[15%] w-full flex flex-col sm:flex-row justify-center gap-4 px-4 sm:px-0">
+        <button 
+      onClick={handleOrderNow}
+      className="bg-blue-600 text-white px-6 py-2 rounded-md"
+    >
+      Order Now
+    </button>
+          <Link to="/test-drive" className="w-full sm:w-auto">
+            <button className="w-full sm:w-auto bg-white text-black px-8 py-2 rounded-md text-base sm:text-lg font-bold hover:bg-gray-100 transition-colors">
+              Demo Drive
+            </button>
           </Link>
         </div>
       </section>
 
 
 {/* Key Features */}
-<section className="py-20 px-4 bg-white">
+<section className="py-10 sm:py-16 md:py-20 px-4 bg-white">
   <div className="max-w-6xl mx-auto">
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center relative">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 md:gap-12 text-center relative">
       <div className="relative">
-        <h3 className="text-9xl font-bold mb-2">327 <span className="text-3xl ml-[-30px]">mi</span></h3>
-        <p className="text-gray-600 text-2xl font-semibold">Range (EPA est.)</p>
+        <h3 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-2">327 <span className="text-xl sm:text-2xl md:text-3xl ml-[-15px] md:ml-[-30px]">mi</span></h3>
+        <p className="text-gray-600 text-lg sm:text-xl md:text-2xl font-semibold">Range (EPA est.)</p>
         <div className="hidden md:block absolute right-[-12px] top-1/2 transform -translate-y-1/2 h-28 w-[2px] bg-gray-400 shadow-lg blur-[1px]"></div>
       </div>
       <div className="relative">
-        <h3 className="text-9xl font-bold mb-2">169 <span className="text-3xl ml-[-30px]">mi</span></h3>
-        <p className="text-gray-600 text-2xl font-semibold">Charge in 15 min</p>
+        <h3 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-2">169 <span className="text-xl sm:text-2xl md:text-3xl ml-[-15px] md:ml-[-30px]">mi</span></h3>
+        <p className="text-gray-600 text-lg sm:text-xl md:text-2xl font-semibold">Charge in 15 min</p>
         <div className="hidden md:block absolute right-[-12px] top-1/2 transform -translate-y-1/2 h-28 w-[2px] bg-gray-600 shadow-lg blur-[1px]"></div>
       </div>
       <div>
-        <h3 className="text-9xl font-bold mb-2">FSD</h3>
-        <p className="text-gray-600 text-2xl font-semibold">Full Self-Driving (Supervised) Compatible</p>
+        <h3 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-2">FSD</h3>
+        <p className="text-gray-600 text-lg sm:text-xl md:text-2xl font-semibold">Full Self-Driving (Supervised) Compatible</p>
       </div>
     </div>
   </div>
 </section>
 
-      {/* Interior */}
-      <section className="relative h-screen">
-        <div className="relative w-[80%] h-[65%] mx-auto overflow-hidden rounded-xl shadow-lg">
-        <img
-          src="https://digitalassets.tesla.com/tesla-contents/image/upload/f_auto,q_auto/Model-Y-2-Redesigned-Desktop.png"
-          alt="Tesla Model Y Interior"
-          className="w-full h-full object-cover"
-        />
-        </div>
-      </section>
+{/* Interior */}
+<section className="relative h-auto md:h-screen py-10 md:py-0">
+  <div className="relative w-[95%] md:w-[80%] h-auto md:h-[65%] mx-auto overflow-hidden rounded-xl shadow-lg">
+    <img
+      src="https://digitalassets.tesla.com/tesla-contents/image/upload/f_auto,q_auto/Model-Y-2-Redesigned-Desktop.png"
+      alt="Tesla Model Y Interior"
+      className="w-full h-full object-cover"
+    />
+  </div>
+</section>
 {/* Text Section */}
 <section className="px-4 bg-white mb-7">
   <div className="max-w-[1700px] mx-auto">
-    <h2 className="text-8xl font-bold text-black mb-4 font-roboto">
+    <h2 className="text-4xl sm:text-5xl  font-bold text-black mb-4 font-roboto">
       Redesigned From End to End
     </h2>
-    <p className="text-gray-600 text-3xl font-semibold leading-relaxed">
+    <p className="text-base sm:text-lg text-gray-600 font-semibold leading-relaxed">
       From the front bumper to the taillight, the exterior is completely redesigned to unlock maximum efficiency so 
       you can get the most range out of every charge. With updated suspension, wheels and tires, your ride will be 
       smoother and quieter.
@@ -179,59 +244,45 @@ function App() {
   </div>
 </section>
 
-<div className="max-w-[2000px] mx-auto py-8">
-      <Swiper
-        modules={[Navigation]}
-        navigation
-        spaceBetween={20}
-        slidesPerView={1}
-        className=""
-      >
-        {carFeatures.map((feature, index) => (
-          <SwiperSlide key={index}>
-            <div className="relative  overflow-hidden">
-              <img src={feature.image} alt={feature.title} className="w-full h-auto object-cover" />
-              <div className="p-6 bg-white">
-                <h2 className="text-6xl font-bold">{feature.title}</h2>
-                <p className="text-gray-500 font-semibold text-2xl">{feature.description}</p>
-              </div>
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+<div className="max-w-[2000px] mx-auto py-4 sm:py-6 md:py-8">
+  <Swiper
+    modules={[Navigation]}
+    navigation
+    spaceBetween={20}
+    slidesPerView={1}
+    className=""
+  >
+    {carFeatures.map((feature, index) => (
+      <SwiperSlide key={index}>
+        <div className="relative overflow-hidden">
+          <img src={feature.image} alt={feature.title} className="w-full h-auto object-cover" />
+          <div className="p-4 sm:p-5 md:p-6 bg-white">
+            <h2 className="text-3xl sm:text-4xl font-bold">{feature.title}</h2>
+            <p className="text-base sm:text-lg  text-gray-500 font-semibold mt-2">{feature.description}</p>
+          </div>
+        </div>
+      </SwiperSlide>
+    ))}
+  </Swiper>
 </div>
 
 {/* Interior */}
-{/* Video */}
-<section className="relative h-screen flex items-center justify-center">
-  <div className="relative w-[90%] h-[75%] mx-auto overflow-hidden rounded-xl shadow-lg">
-    <video 
-      src="https://digitalassets.tesla.com/tesla-contents/video/upload/f_auto,q_auto:best/Model-Y-Seven-Seater_Y_Video.mp4" 
-      autoPlay 
-      loop 
-      muted 
-      playsInline 
-      className="w-full h-full object-cover"
-    />
-  </div>
-</section>
-{/* Text */}
-<section className="py-16 px-6">
+<section className="py-8 sm:py-12 md:py-16 px-4 sm:px-6">
       <div className="text-center">
-        <h2 className="text-7xl font-semibold">All-New Interior</h2>
-        <p className="text-2xl text-gray-500 mt-2 font-semibold">
+        <h2 className="text-3xl sm:text-4xl font-semibold">All-New Interior</h2>
+        <p className="text-base sm:text-lg text-gray-500 mt-2 font-semibold">
           Refined materials integrate with advanced features to create a
           reimagined cabin environment that changes your perception of what
           riding in a car should feel like.
         </p>
       </div>
 
-      <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-[1700px] items-center mx-auto ">
+      <div className="mt-6 sm:mt-8 md:mt-10 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 max-w-[1700px] items-center mx-auto">
         {/* Feature 1 */}
-        <div className="p-6 bg-gray-100 rounded-lg text-center">
-          <FaVolumeUp className="text-6xl mx-auto mb-4" />
-          <h3 className="text-4xl font-semibold">Immersive Soundscape</h3>
-          <p className="text-gray-600 mt-2 text-2xl font-medium">
+        <div className="p-4 sm:p-5 md:p-6 bg-gray-100 rounded-lg text-center">
+          <FaVolumeUp className="text-3xl sm:text-4xl mx-auto mb-3 md:mb-4" />
+          <h3 className="text-2xl sm:text-3xl font-semibold">Immersive Soundscape</h3>
+          <p className="text-gray-600 mt-2 text-sm sm:text-base font-medium">
             Step inside, close the door and experience the vast silence offered
             by specially engineered acoustic glass. Queue up your favorite
             songs and listen as your cabin turns into your own private sound
@@ -240,10 +291,10 @@ function App() {
         </div>
 
         {/* Feature 2 */}
-        <div className="p-6 bg-gray-100 rounded-lg text-center">
-          <MdEventSeat className="text-6xl mx-auto mb-4" />
-          <h3 className="text-4xl font-semibold">Comfort From Any Seat</h3>
-          <p className="text-gray-600 mt-2 text-2xl font-medium">
+        <div className="p-4 sm:p-5 md:p-6 bg-gray-100 rounded-lg text-center">
+          <MdEventSeat className="text-3xl sm:text-4xl mx-auto mb-3 md:mb-4" />
+          <h3 className="text-2xl sm:text-3xl font-semibold">Comfort From Any Seat</h3>
+          <p className="text-gray-600 mt-2 text-sm sm:text-base font-medium">
             Front and rear touchscreens put all your climate and entertainment
             settings within reach. Heated and ventilated seats, power recline,
             and soft-touch textiles provide added comfort.
@@ -251,10 +302,10 @@ function App() {
         </div>
 
         {/* Feature 3 */}
-        <div className="p-6 bg-gray-100 rounded-lg text-center">
-          <FaWifi className="text-6xl mx-auto mb-4" />
-          <h3 className="text-4xl font-semibold">Even More Connected</h3>
-          <p className="text-gray-600 mt-2 text-2xl font-medium">
+        <div className="p-4 sm:p-5 md:p-6 bg-gray-100 rounded-lg text-center">
+          <FaWifi className="text-3xl sm:text-4xl mx-auto mb-3 md:mb-4" />
+          <h3 className="text-2xl sm:text-3xl font-semibold">Even More Connected</h3>
+          <p className="text-gray-600 mt-2 text-sm sm:text-base font-medium">
             Calls come in clear. Data downloads fast. Doors and trunks unlock
             when you approach. Enhanced connectivity and signal range keep you
             and your vehicle in sync. Bluetooth capability keeps passengers
@@ -276,10 +327,10 @@ function App() {
     />
   </div>
   {/* Text Below Video */}
-  <div className="mt-6 text-center max-w-6xl">
-    <h2 className="text-7xl font-semibold text-gray-900">Expansive Storage</h2>
-    <p className="mt-2 text-2xl text-gray-600 font-medium">
-    Power recline second-row seats fold flat to expand your trunk space to a total of 76 cubic feet of storage. A hands-free trunk automatically unlocks as you approach so you can easily store all your gear.
+  <div className="mt-4 sm:mt-5 md:mt-6 text-center max-w-6xl px-4">
+    <h2 className="text-3xl sm:text-4xl font-semibold text-gray-900">Expansive Storage</h2>
+    <p className="mt-2 text-base sm:text-lg text-gray-600 font-medium">
+      Power recline second-row seats fold flat to expand your trunk space to a total of 76 cubic feet of storage. A hands-free trunk automatically unlocks as you approach so you can easily store all your gear.
     </p>
   </div>
 </section>
@@ -287,8 +338,8 @@ function App() {
 <div className="max-w-[2000px] mx-auto py-8">
   {/* Heading and Description */}
   <div className="text-center mb-10 px-4">
-    <h2 className="text-7xl md:text-7xl font-bold text-gray-900">Features That Only Get Better</h2>
-    <p className="mt-4 text-2xl md:text-2xl text-gray-600 font-medium">
+    <h2 className="text-4xl sm:text-5xl font-bold text-gray-900">Features That Only Get Better</h2>
+    <p className="mt-4 text-lg sm:text-xl text-gray-600 font-medium">
     Play your favorite movie, game or song from any seat. An upgraded, ultra-responsive 15.4-inch touchscreen sits at the center of your driving experience and an 8-inch touchscreen gives access to second-row passengers. With over-the-air updates, you’ll always have access to the latest features. Discover the advanced technologies and sleek design details that set Tesla apart in every ride.
     </p>
   </div>
@@ -306,8 +357,8 @@ function App() {
         <div className="relative overflow-hidden">
           <img src={feature.image} alt={feature.title} className="w-full h-auto object-cover" />
           <div className="p-6 bg-white">
-            <h2 className="text-6xl font-bold">{feature.title}</h2>
-            <p className="text-gray-500 font-semibold text-2xl">{feature.description}</p>
+            <h2 className="text-4xl sm:text-5xl font-bold">{feature.title}</h2>
+            <p className="text-gray-500 font-semibold text-lg sm:text-xl">{feature.description}</p>
           </div>
         </div>
       </SwiperSlide>
@@ -316,63 +367,64 @@ function App() {
 </div>
 <div className="bg-gray-900 text-white">
       {/* HERO IMAGE */}
-      <div className="relative w-[90%] h-[75%] mx-auto overflow-hidden rounded-xl mt-10 shadow-lg">
+      <div className="relative w-[90%] h-[75%] mx-auto overflow-hidden rounded-xl mt-8 sm:mt-10 shadow-lg">
         <img
-          src="https://digitalassets.tesla.com/tesla-contents/image/upload/f_auto,q_auto/Model-Y-2-Autonomous-Travel-Desktop.jpg" // replace with your actual image path
+          src="https://digitalassets.tesla.com/tesla-contents/image/upload/f_auto,q_auto/Model-Y-2-Autonomous-Travel-Desktop.jpg"
           alt="Autonomous Driving"
-          className="w-full object-cover h-auto  mt-20"
+          className="w-full object-cover h-auto mt-12 sm:mt-16 md:mt-20"
         />
-        <h1 className="text-4xl md:text-7xl font-bold text-white text-center py-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white text-center py-4 sm:py-6 md:py-8">
           The Future of Travel Is Autonomous
         </h1>
       </div>
 
       {/* FEATURE CARDS */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-6 md:px-20 py-12 max-w-[1900px] mx-auto">
-        <div className="bg-[#1e1e1e] p-12 rounded-lg shadow-lg">
-          <FaCarSide size={80} className="mb-4 " />
-          <h3 className="text-4xl font-semibold">Full Self-Driving <span className="text-xl font-normal">(Supervised)</span></h3>
-          <p className="mt-2 text-gray-400 font-semibold text-2xl">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 px-4 sm:px-6 md:px-12 lg:px-20 py-8 sm:py-10 md:py-12 max-w-[1900px] mx-auto">
+        <div className="bg-[#1e1e1e] p-6 sm:p-8 md:p-10 lg:p-12 rounded-lg shadow-lg">
+          <FaCarSide size={40} className="mb-3 sm:mb-4 md:size-50 lg:size-60" />
+          <h3 className="text-xl sm:text-2xl font-semibold">Full Self-Driving <span className="text-base sm:text-lg font-normal">(Supervised)</span></h3>
+          <p className="mt-2 text-gray-400 font-semibold text-sm sm:text-base ">
             A suite of advanced driver assistance features designed to provide more active guidance and assisted driving under your active supervision.
           </p>
         </div>
 
-        <div className="bg-[#1e1e1e] p-12 rounded-lg shadow-lg">
-          <FaCamera size={80} className="mb-4" />
-          <h3 className="text-4xl font-semibold">Front-Facing Cameras</h3>
-          <p className="mt-2 text-gray-400 font-semibold text-2xl">
+        <div className="bg-[#1e1e1e] p-6 sm:p-8 md:p-10 lg:p-12 rounded-lg shadow-lg">
+          <FaCamera size={40} className="mb-3 sm:mb-4 md:size-50 lg:size-60" />
+          <h3 className="text-xl sm:text-2xl font-semibold">Front-Facing Cameras</h3>
+          <p className="mt-2 text-gray-400 font-semibold text-sm sm:text-base">
             Enhanced visibility for Autopilot and Actually Smart Summon capabilities.
           </p>
         </div>
 
-        <div className="bg-[#1e1e1e] p-12 rounded-lg shadow-lg">
-          <FaEye size={80} className="mb-4" />
-          <h3 className="text-4xl font-semibold">Blind Spot Monitoring</h3>
-          <p className="mt-2 text-gray-400 font-semibold text-2xl">
+        <div className="bg-[#1e1e1e] p-6 sm:p-8 md:p-10 lg:p-12 rounded-lg shadow-lg">
+          <FaEye size={40} className="mb-3 sm:mb-4 md:size-50 lg:size-60" />
+          <h3 className="text-xl sm:text-2xl font-semibold">Blind Spot Monitoring</h3>
+          <p className="mt-2 text-gray-400 font-semibold text-sm sm:text-base">
             Illuminated warning lights and on-screen visualizations help you safely check your surroundings.
           </p>
         </div>
       </div>
 
       {/* SAFETY SECTION */}
-      <div className="grid md:grid-cols-2 items-center gap-10 px-6 md:px-20 pb-20 mx-auto max-w-[2000px]">
+      <div className="grid md:grid-cols-2 items-center gap-4 sm:gap-6 md:gap-8 px-3 sm:px-4 md:px-8 lg:px-12 pb-8 sm:pb-12 md:pb-16 mx-auto max-w-[2000px]">
         <div>
-          <h2 className="text-6xl font-bold mb-4">Engineered For Your Safety</h2>
-          <p className="text-gray-400 text-2xl font-semibold">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2 sm:mb-3">Engineered For Your Safety</h2>
+          <p className="text-gray-400 text-sm sm:text-base md:text-lg font-medium">
             We engineer our vehicles to be the safest in the world. Active safety features can help reduce impact severity or help prevent accidents altogether. Forward Collision Warning, Active Emergency Braking and Lane Departure Avoidance come standard. A stiff body structure better absorbs crash energy while airbags help protect occupants.
           </p>
         </div>
-        <div className="md:w-[1050px] w-full">
+        <div className="w-full md:w-[85%] lg:w-[90%]">
           <img
-            src="https://digitalassets.tesla.com/tesla-contents/image/upload/f_auto,q_auto/Model-Y-2-Safety-Desktop.jpg" // replace with your actual image path
+            src="https://digitalassets.tesla.com/tesla-contents/image/upload/f_auto,q_auto/Model-Y-2-Safety-Desktop.jpg"
             alt="Car Frame"
-            className="w-full h-auto object-contain"
+            className="w-full h-auto object-contain rounded-lg"
           />
         </div>
       </div>
     </div>
-    {/* Carging station */}
-    <div className="w-full bg-white py-10 px-4 md:px-16">
+
+    {/* Charging station */}
+    <div className="w-full bg-white py-6 sm:py-8 md:py-10 px-4 md:px-8 lg:px-16">
       <div className="max-w-[1900px] mx-auto">
         <div className="rounded-lg overflow-hidden">
           <img
@@ -381,17 +433,18 @@ function App() {
             className="w-full h-auto object-cover"
           />
         </div>
-        <div className="text-center mt-8">
-          <h2 className="text-7xl font-semibold md:text-7xl">
+        <div className="text-center mt-4 sm:mt-6 md:mt-8">
+          <h2 className="text-3xl sm:text-4xl font-semibold">
             No More Gas Stations
           </h2>
-          <p className="text-gray-600 text-2xl font-semibold  mt-3 md:text-2xl">
-          Plenty of range for every kind of drive. From daily driving to family road trips, charging is fast, convenient and accessible anywhere there’s electricity.
+          <p className="text-gray-600 text-base sm:text-lg font-semibold mt-2 sm:mt-3">
+            Plenty of range for every kind of drive. From daily driving to family road trips, charging is fast, convenient and accessible anywhere there's electricity.
           </p>
         </div>
       </div>
     </div>
-    <div className="space-y-20 p-4">
+    {/*  */}
+    <div className="space-y-12 sm:space-y-16 md:space-y-20 p-4">
       {sections.map((section, index) => (
         <div key={index} className="text-center max-w-[1800px] mx-auto">
           {section.type === 'video' ? (
@@ -410,44 +463,33 @@ function App() {
               className="w-full h-auto rounded-xl object-cover"
             />
           )}
-          <h2 className="text-7xl font-bold mt-6">{section.title}</h2>
-          <p className="text-2xl font-semibold text-gray-600 mt-2">{section.desc}</p>
+          <h2 className="text-3xl sm:text-4xl font-bold mt-4 sm:mt-5 md:mt-6">{section.title}</h2>
+          <p className="text-base sm:text-lg font-semibold text-gray-600 mt-2 sm:mt-3">{section.desc}</p>
         </div>
       ))}
     </div>
     {/* Get Updates */}
     <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
-      <div className="max-w-4xl w-full">
+      <div className="max-w-xl w-full">
         <div className="text-center mb-12">
           <h1 className="text-5xl font-medium mb-4">Get Updates</h1>
           <p className="text-xl text-gray-300">Be the first to receive updates on Model Y.</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <form onSubmit={handleEmailSubmit} className="space-y-6">
+          <div className="space-y-4">
             <div>
               <label htmlFor="firstName" className="block text-sm mb-2">First Name</label>
               <input
                 type="text"
                 id="firstName"
                 className="w-full bg-neutral-800 rounded p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={formData.firstName}
-                onChange={(e) => setFormData({...formData, firstName: e.target.value})}
+                value={formData.name}
+                onChange={(e) => setFormData({...formData, name: e.target.value})}
+                required
               />
             </div>
-            <div>
-              <label htmlFor="lastName" className="block text-sm mb-2">Last Name</label>
-              <input
-                type="text"
-                id="lastName"
-                className="w-full bg-neutral-800 rounded p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={formData.lastName}
-                onChange={(e) => setFormData({...formData, lastName: e.target.value})}
-              />
-            </div>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label htmlFor="email" className="block text-sm mb-2">Email Address</label>
               <input
@@ -456,58 +498,41 @@ function App() {
                 className="w-full bg-neutral-800 rounded p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={formData.email}
                 onChange={(e) => setFormData({...formData, email: e.target.value})}
+                required
               />
             </div>
+
             <div>
-              <label htmlFor="phone" className="block text-sm mb-2">Phone Number</label>
-              <div className="relative">
-                <select className="absolute left-0 top-0 h-full bg-neutral-800 border-r border-neutral-700 rounded-l px-3 focus:outline-none">
-                  <option>US +1</option>
-                </select>
-                <input
-                  type="tel"
-                  id="phone"
-                  className="w-full bg-neutral-800 rounded p-3 pl-20 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="(201) 555-0123"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                />
-              </div>
+              <label htmlFor="subject" className="block text-sm mb-2">Subject</label>
+              <input
+                type="text"
+                id="subject"
+                className="w-full bg-neutral-800 rounded p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={formData.subject}
+                onChange={(e) => setFormData({...formData, subject: e.target.value})}
+                required
+              />
+            </div>
+
+            <div>
+              <label htmlFor="message" className="block text-sm mb-2">Message</label>
+              <textarea
+                id="message"
+                className="w-full bg-neutral-800 rounded p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[100px]"
+                value={formData.message}
+                onChange={(e) => setFormData({...formData, message: e.target.value})}
+                required
+              />
             </div>
           </div>
 
-          <div className="max-w-[50%]">
-            <label htmlFor="zipCode" className="block text-sm mb-2">Zip Code</label>
-            <input
-              type="text"
-              id="zipCode"
-              className="w-full bg-neutral-800 rounded p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={formData.zipCode}
-              onChange={(e) => setFormData({...formData, zipCode: e.target.value})}
-            />
-          </div>
-
-          <div className="space-y-6">
-            <label className="flex items-start space-x-3">
-              <input
-                type="checkbox"
-                className="mt-1"
-                checked={formData.consent}
-                onChange={(e) => setFormData({...formData, consent: e.target.checked})}
-              />
-              <span className="text-sm text-gray-300">
-                I consent to be contacted about Tesla products, including through automated calls or texts.
-                I understand and agree to Tesla's{' '}
-                <a href="#" className="underline">Privacy Notice</a> and{' '}
-                <a href="#" className="underline">Terms of Use</a>.
-              </span>
-            </label>
-
+          <div className="flex justify-center mt-6">
             <button
               type="submit"
-              className="w-full md:w-auto text-center items-center px-12 py-3 bg-blue-600 hover:bg-blue-700 rounded font-medium transition-colors"
+              disabled={isLoading}
+              className="w-full max-w-md text-center px-12 py-3 bg-blue-600 hover:bg-blue-700 rounded font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Submit
+              {isLoading ? 'Sending...' : 'Submit'}
             </button>
           </div>
         </form>
@@ -683,19 +708,20 @@ function App() {
   />
 
   {/* Text Content + Buttons */}
-  <div className="absolute top-[15%] w-full text-center flex flex-col items-center gap-4">
-    <h1 className="text-4xl font-bold text-white">Design Yours</h1>
-    <p className="text-lg text-white">Model Y is waiting for you.</p>
+  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full text-center flex flex-col items-center gap-6">
+    <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white">Design Yours</h1>
+    <p className="text-lg sm:text-xl md:text-2xl text-white">Model Y is waiting for you.</p>
     
     {/* Buttons */}
-    <div className="flex gap-4 mt-4">
-      <Link to="/modely/order-now">
-        <button className="bg-blue-600 text-white px-6 py-2 rounded-md text-base font-medium hover:bg-blue-700">
-          Order Now
-        </button>
-      </Link>
-      <Link to="/modely/demo-drive">
-        <button className="bg-white text-black px-6 py-2 rounded-md text-base font-medium hover:bg-gray-100">
+    <div className="flex flex-col sm:flex-row justify-center gap-4 px-4 sm:px-0 mt-6">
+      <button 
+        onClick={handleOrderNow}
+        className="w-full sm:w-auto bg-blue-600 text-white px-8 sm:px-12 py-2 rounded-md text-base sm:text-lg font-bold hover:bg-blue-700 transition-colors"
+      >
+        Order Now
+      </button>
+      <Link to="/test-drive" className="w-full sm:w-auto">
+        <button className="w-full sm:w-auto bg-white text-black px-8 sm:px-12 py-2 rounded-md text-base sm:text-lg font-bold hover:bg-gray-100 transition-colors">
           Demo Drive
         </button>
       </Link>

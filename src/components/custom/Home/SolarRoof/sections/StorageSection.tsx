@@ -1,6 +1,24 @@
 import React from 'react';
-
+import {useNavigate} from 'react-router-dom'
 const PowerwallSection: React.FC = () => {
+    const navigate = useNavigate();
+
+    const handleOrderNow = () => {
+      navigate('/order-now', {
+        state: {
+          productDetails: {
+            id: 'solar-roof-2024',
+            name: 'Tesla Solar Roof',
+            price: 15000 // Base price for solar roof
+          }
+        }
+      });
+    };
+
+  const handleScheduleConsultation = () => {
+    window.location.href = 'https://www.tesla.com/solar-virtual-consultations?poi=solarroof';
+  };
+  
   return (
     <section className="flex flex-col lg:flex-row h-screen">
       {/* Left Column - Text */}
@@ -20,13 +38,12 @@ const PowerwallSection: React.FC = () => {
         {/* Buttons */}
         <div className="space-y-4">
           <a
-            href="#"
+            onClick={handleOrderNow}
             className="block text-center border border-black py-2 px-4 hover:bg-black hover:text-white transition"
           >
             Order Now
           </a>
           <a
-            href="#"
             className="block text-center bg-gray-100 text-gray-700 py-2 px-4 hover:bg-gray-200 transition"
           >
             Learn More

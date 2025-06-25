@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FaPause, FaPlay, FaVolumeMute, FaVolumeUp, FaExpand } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link  , useNavigate} from "react-router-dom";
 
 // Internal Dependencies
 import { Button } from "@/components/ui/button";
@@ -29,7 +29,19 @@ const Model3LearnMore = () => {
   const [progress, setProgress] = useState(0);
   const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef(null);
-
+  const navigate = useNavigate();
+  
+  const handleOrderNow = () => {
+    navigate('/order-now', {
+      state: {
+        productDetails: {
+          id: 'model3-2024',
+          name: 'Tesla Model 3',
+          price: 40240 // Base price for Model 3
+        }
+      }
+    });
+  };
   const videoData = [
     {
       src: video1,
@@ -164,18 +176,24 @@ const Model3LearnMore = () => {
 
       {/* Buttons */}
       <div className="space-x-4">
-        <button className="bg-blue-600 text-white px-6 py-2 rounded-md">
-          Order Now
-        </button>
-        <button className="bg-white text-black px-6 py-2 rounded-md">
-          Experience Model 3
-        </button>
+        <button 
+      onClick={handleOrderNow}
+      className="bg-blue-600 text-white px-6 py-2 rounded-md"
+    >
+      Order Now
+    </button>
+    
+        <Link to="/test-drive">
+          <button className="bg-white text-black px-6 py-2 rounded-md">
+            Experience Model 3
+          </button>
+        </Link>
       </div>
     </div>
 
   </div>
       {/* Bottom Shadow */}
-      <div className="absolute bottom-0 left-0 w-full h-44 bg-gradient-to-t from-black/90 to-transparent"></div>
+      <div className="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-black/90 to-transparent"></div>
 </div>
 {/* Hero Section 2 */}
 <div className="relative h-screen">
@@ -499,9 +517,11 @@ const Model3LearnMore = () => {
       />
     </div>
 
-    <button className="mt-4 w-[150px] bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition shadow-lg">
-      Next
-    </button>
+    <Link to="/test-drive">
+      <button className="mt-4 w-[150px] bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition shadow-lg">
+        Next
+      </button>
+    </Link>
   </div>
 
   {/* Right Section - Image */}

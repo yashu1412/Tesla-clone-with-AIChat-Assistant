@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FaPause, FaPlay, FaVolumeMute, FaVolumeUp, FaExpand } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom'
 import Navbar from '../../../common/Navbar';
 import Footer from './layout/Footer';
 import HeroSection from './sections/HeroSection';
@@ -88,7 +89,22 @@ function SolarPanel() {
             videoRef.current.play();
             setIsPlaying(true);
           }, [activeIndex]);
+          const navigate = useNavigate();
         
+          const handleOrderNow = () => {
+            navigate('/order-now', {
+              state: {
+                productDetails: {
+                  id: 'solar-roof-2024',
+                  name: 'Tesla Solar Roof',
+                  price: 15000 // Base price for solar roof
+                }
+              }
+            });
+          };
+          const handleScheduleConsultation = () => {
+            window.location.href = 'https://www.tesla.com/solar-virtual-consultations?poi=solarroof';
+          };
   return (
     <div className="app">
       <Navbar />
@@ -114,12 +130,14 @@ function SolarPanel() {
     Install Solar Roof and power your home with a fully integrated solar and energy storage system.
     The glass solar tiles and steel roofing tiles look great up close and from the street, 
     complementing your home’s natural styling.{' '}
-    <a href="#" className="text-blue-600 underline hover:text-blue-800">
+    <a href="http://tesla.com/solar-virtual-consultations?poi=solarpanels" className="text-blue-600 underline hover:text-blue-800">
       Schedule a virtual consultation
     </a>{' '}
     with a Tesla Advisor to learn more.
   </p>
-  <button className="border-4 border-black text-black px-12 py-2 rounded hover:bg-black hover:text-white transition text-xl font-semibold">
+  <button 
+  onClick={handleOrderNow}
+  className="border-4 border-black text-black px-12 py-2 rounded hover:bg-black hover:text-white transition text-xl font-semibold">
     Order Now
   </button>
 </div>
@@ -134,7 +152,7 @@ function SolarPanel() {
           <p className="text-lg text-gray-700 mb-1">Installation</p>
           <h2 className="text-4xl font-semibold mb-6">Trusted Expertise</h2>
           <a
-            href="#"
+            onClick={handleOrderNow}
             className="inline-block border-2 border-black py-2 px-8 font-medium hover:bg-black hover:text-white transition"
           >
             Order Now

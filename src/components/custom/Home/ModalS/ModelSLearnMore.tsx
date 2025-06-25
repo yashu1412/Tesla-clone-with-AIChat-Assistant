@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FaPause, FaPlay, FaVolumeMute, FaVolumeUp, FaExpand } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import Header from './layout/Header';
+import { useNavigate} from "react-router-dom";
+import Header from '../../../common/Navbar';
 import Hero from './sections/Hero';
 import InteriorSection from './sections/InteriorSection';
 import RangeSection from './sections/RangeSection';
@@ -22,6 +22,7 @@ function ModelYLearnMore() {
     const [isMuted, setIsMuted] = useState(true);
     const videoRef = useRef(null);
     const [selectedTab, setSelectedTab] = useState('awd');
+    const navigate = useNavigate();
   
   const videoData = [
     {
@@ -105,7 +106,17 @@ function ModelYLearnMore() {
       videoRef.current.play();
       setIsPlaying(true);
     }, [activeIndex]);
-  
+    const handleOrderNow = () => {
+      navigate('/order-now', {
+        state: {
+          productDetails: {
+            id: 'models-2024',
+            name: 'Tesla Model S',
+            price: 74990 // Base price for Model S
+          }
+        }
+      });
+    };
   return (
     <div className="relative w-full">
       <Header />
@@ -179,9 +190,9 @@ function ModelYLearnMore() {
   </div>
 
   {/* Text Content */}
-  <div className="text-center text-white mt-6 max-w-xl">
-    <h2 className="text-2xl font-bold">{videoData[activeIndex].title}</h2>
-    <p className="text-sm mt-2 text-gray-300">{videoData[activeIndex].description}</p>
+  <div className="text-center text-white mt-4 max-w-lg mx-auto px-4">
+    <h2 className="text-lg sm:text-xl md:text-2xl font-bold">{videoData[activeIndex].title}</h2>
+    <p className="text-xs sm:text-sm md:text-base mt-2 text-gray-300">{videoData[activeIndex].description}</p>
   </div>
 </div>
 
@@ -211,20 +222,22 @@ function ModelYLearnMore() {
   </div>
 </div>
 {/* Content Section */}
-<div className="flex flex-col md:flex-row items-start justify-between px-8 md:px-20 py-12 w-[1500px] mx-auto">
+<div className="flex flex-col md:flex-row items-start justify-between px-4 md:px-20 py-8 md:py-12 w-full md:w-[1500px] mx-auto">
   <div className="md:w-1/2">
-    <p className="uppercase text-base font-medium tracking-wide mb-1">Plaid</p>
-    <h2 className="text-3xl font-semibold mb-6">Beyond Ludicrous</h2>
-    <div className="flex gap-4">
-      <button className="px-12 py-2 border-4 rounded-sm border-black font-medium hover:bg-black hover:text-white transition">Order Now</button>
-      <button className="px-12 py-2 border-4 rounded-sm border-black bg-gray-100 text-black font-medium hover:bg-gray-200 transition">Demo Drive</button>
+    <p className="text-sm md:text-base font-medium tracking-wide mb-1">Plaid</p>
+    <h2 className="text-2xl md:text-3xl font-semibold mb-4 md:mb-6">Beyond Ludicrous</h2>
+    <div className="flex gap-2 md:gap-4">
+      <button 
+      onClick={handleOrderNow}
+      className="px-8 md:px-12 py-2 border-2 rounded-sm border-black text-sm md:text-base font-medium hover:bg-black hover:text-white transition">Order Now</button>
+      <button 
+      onClick={() => navigate('/test-drive')}
+      className="px-8 md:px-12 py-2 border-2 rounded-sm border-black bg-gray-100 text-black text-sm md:text-base font-medium hover:bg-gray-200 transition">Demo Drive</button>
     </div>
   </div>
-  <div className="md:w-1/2 text-lg font-medium text-gray-700">
+  <div className="md:w-1/2 text-base md:text-lg font-medium text-gray-700 mt-6 md:mt-0">
     <p>
-    Model S Plaid has the quickest acceleration of any vehicle in production. Updated battery architecture for all Model S trims enables back-to-back track runs without performance degradation.
-      <a href="#" className="underline ml-1">Chat with a Tesla Advisor</a> to learn more about Model S or
-      <a href="#" className="underline ml-1">schedule a demo drive</a> today.
+      Model S Plaid has the quickest acceleration of any vehicle in production...
     </p>
   </div>
 </div>
@@ -243,34 +256,34 @@ function ModelYLearnMore() {
         <DesignSection/>
         <RangeSection/>
         {/* Demo Drive */}
-<div className="flex flex-col md:flex-row items-center justify-center h-screen bg-white text-black px-6">
+<div className="flex flex-col md:flex-row items-center justify-center min-h-screen bg-white text-black px-4 sm:px-6">
   {/* Left Section - Form */}
-  <div className="w-full md:w-1/2 max-w-md translate-y-[-175px] translate-x-[-50px] space-y-5 ">
-    <h1 className="text-4xl font-semibold">Demo Drive Model S</h1>
-    <p className="text-lg text-gray-800 mt-2">
+  <div className="w-full md:w-1/2 max-w-md space-y-4 sm:space-y-5 md:translate-y-[-175px] md:translate-x-[-50px]">
+    <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold">Demo Drive Model S</h1>
+    <p className="text-sm sm:text-base md:text-lg text-gray-800 mt-1 sm:mt-2">
       Enter a zip code to find Tesla showrooms near you:
     </p>
 
-    <div className="mt-4">
-      <label className="block text-base font-medium">Zip Code</label>
+    <div className="mt-3 sm:mt-4">
+      <label className="block text-sm sm:text-base font-medium">Zip Code</label>
       <input
         type="text"
-        className="w-[200px] bg-zinc-200 text-white rounded-sm  px-10 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-500 "
-        placeholder=""
+        className="w-full sm:w-[200px] bg-zinc-200 text-black rounded-sm px-4 sm:px-10 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-500"
+        placeholder="Enter zip code"
       />
     </div>
 
-    <button className="mt-4 w-[200px] bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-sm transition shadow-lg">
+    <button className="w-full sm:w-[200px] bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm sm:text-base py-2 px-4 rounded-sm transition shadow-lg">
       Next
     </button>
   </div>
 
   {/* Right Section - Image */}
-  <div className="w-full md:w-1/2 flex justify-center mt-8 md:mt-0">
-    <div className="relative max-w-3xl w-full overflow-hidden rounded-lg shadow-2xl">
+  <div className="w-full md:w-1/2 flex justify-center mt-6 sm:mt-8 md:mt-0">
+    <div className="relative max-w-2xl sm:max-w-3xl w-full overflow-hidden rounded-lg shadow-xl">
       <img
-        src="https://digitalassets.tesla.com/discovery-tesla-com/image/upload/f_auto,q_auto/TD_Component_MS_Desktop.jpg" // Replace with your actual Tesla image
-        alt="Tesla Model 3"
+        src="https://digitalassets.tesla.com/discovery-tesla-com/image/upload/f_auto,q_auto/TD_Component_MS_Desktop.jpg"
+        alt="Tesla Model S"
         className="w-full h-full object-cover"
       />
     </div>
@@ -347,16 +360,26 @@ function ModelYLearnMore() {
         
               {/* Buttons */}
               <div className="absolute bottom-[5%] w-full flex justify-center gap-4">
-                <Link to="/order-now">
-                  <button className="bg-blue-600 text-white px-6 py-2 rounded-md text-base font-medium hover:bg-blue-700">
-                    Order Now
-                  </button>
-                </Link>
-                <Link to="/get-estimate">
-                  <button className="bg-gray-800 text-white px-6 py-2 rounded-md text-base font-medium hover:bg-gray-900">
-                    Get an Estimate
-                  </button>
-                </Link>
+                <button 
+                  onClick={() => navigate('/order-now', {
+                    state: {
+                      productDetails: {
+                        id: 'models-2024',
+                        name: 'Tesla Model S',
+                        price: 74990
+                      }
+                    }
+                  })}
+                  className="bg-blue-600 text-white px-6 py-2 rounded-md text-base font-medium hover:bg-blue-700"
+                >
+                  Order Now
+                </button>
+                <button 
+                  onClick={() => window.location.href = 'https://www.tesla.com/tradein'}
+                  className="bg-gray-800 text-white px-6 py-2 rounded-md text-base font-medium hover:bg-gray-900"
+                >
+                  Get an Estimate
+                </button>
               </div>
             </div>
       </main>

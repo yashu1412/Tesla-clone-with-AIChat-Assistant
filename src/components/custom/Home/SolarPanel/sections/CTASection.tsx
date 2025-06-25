@@ -1,8 +1,27 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Section from '../layout/Section';
 import Button from '../ui/Button';
 
 const CTASection: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleOrderNow = () => {
+    navigate('/order-now', {
+      state: {
+        productDetails: {
+          id: 'solar-panels-2024',
+          name: 'Tesla Solar Panels',
+          price: 12000 // Base price for solar panels
+        }
+      }
+    });
+  };
+
+  const handleScheduleConsultation = () => {
+    window.location.href = 'https://www.tesla.com/solar-virtual-consultations?poi=solarpanels';
+  };
+
   return (
     <Section id="cta" className="relative w-full h-[80vh] overflow-hidden">
       {/* Background Image */}
@@ -24,8 +43,8 @@ const CTASection: React.FC = () => {
           Design your solar system or schedule a virtual consultation with a Tesla Advisor to learn more.
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
-          <Button>Order Now</Button>
-          <Button variant="outline">Schedule a Consultation</Button>
+          <Button onClick={handleOrderNow}>Order Now</Button>
+          <Button variant="outline" onClick={handleScheduleConsultation}>Schedule a Consultation</Button>
         </div>
       </div>
     </Section>

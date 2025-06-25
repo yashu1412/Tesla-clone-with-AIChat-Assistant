@@ -1,6 +1,19 @@
 import React from 'react';
-
+import { useNavigate } from 'react-router-dom'
 const EfficiencySection: React.FC = () => {
+    const navigate = useNavigate();
+  
+    const handleOrderNow = () => {
+      navigate('/order-now', {
+        state: {
+          productDetails: {
+            id: 'solar-roof-2024',
+            name: 'Tesla Solar Roof',
+            price: 15000 // Base price for solar roof
+          }
+        }
+      });
+    };
   return (
     <section className="flex flex-col lg:flex-row h-screen">
       {/* Left Side - Text */}

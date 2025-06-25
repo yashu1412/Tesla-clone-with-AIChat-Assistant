@@ -1,8 +1,26 @@
 import type React from 'react';
 import Section from '../layout/Section';
 import Button from '../ui/Button';
+import { useNavigate } from 'react-router-dom';
 
 const HeroSection: React.FC = () => {
+      const navigate = useNavigate();
+    
+      const handleOrderNow = () => {
+        navigate('/order-now', {
+          state: {
+            productDetails: {
+              id: 'powerwall-3-2024',
+              name: 'Tesla PowerWall 3',
+              price: 8400 // Base price for PowerWall 3
+            }
+          }
+        });
+      };
+    
+      const handleScheduleConsultation = () => {
+        window.location.href = 'https://www.tesla.com/solar-virtual-consultations?poi=solarroof';
+      };
   return (
     <Section id="hero" className="relative text-white overflow-hidden h-screen">
       {/* Video background */}
@@ -24,7 +42,9 @@ const HeroSection: React.FC = () => {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button className="min-w-[240px]">Order Now</Button>
+          <Button 
+          onClick={handleOrderNow}
+          className="min-w-[240px]">Order Now</Button>
           <Button variant="outline" className="min-w-[240px]">Order With Solar</Button>
         </div>
       </div>

@@ -1,7 +1,22 @@
 import type React from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Hero: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleOrderNow = () => {
+    navigate('/order-now', {
+      state: {
+        productDetails: {
+          id: 'modelx-2024',
+          name: 'Tesla Model X',
+          price: 79990 // Base price for Model X
+        }
+      }
+    });
+  };
+
   return (
     <section className="relative h-screen w-full flex flex-col justify-between overflow-hidden bg-gray-100 text-white">
       {/* Background Image */}
@@ -14,18 +29,18 @@ const Hero: React.FC = () => {
       </div>
 
       {/* Content Container (title + subtitle) */}
-      <div className="relative z-10 flex flex-col items-center pt-24">
-        <h1 className="text-5xl md:text-7xl font-medium mb-1 text-tesla-black">Model X</h1>
-        <p className="text-xl font-semibold text-tesla-black mb-2">Free Supercharging Included</p>
+      <div className="relative z-10 flex flex-col items-center pt-16 sm:pt-24">
+        <h1 className="text-3xl sm:text-5xl md:text-7xl font-medium mb-1 text-tesla-black">Model X</h1>
+        <p className="text-lg sm:text-xl font-semibold text-tesla-black mb-2">Free Supercharging Included</p>
       </div>
 
       {/* Bottom Section */}
-      <div className="relative z-10 flex flex-col items-center justify-end w-full mt-auto mb-4 gap-6">
+      <div className="relative z-10 flex flex-col items-center justify-end w-full mt-auto mb-4 gap-4 sm:gap-6">
         {/* Stats Container */}
-        <div className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-16">
+        <div className="flex flex-col md:flex-row justify-center items-center gap-3 md:gap-16">
           <div className="flex flex-col items-center text-center">
-            <span className="text-3xl font-medium text-tesla-black">314 mi</span>
-            <span className="text-xl text-tesla-black">Range (EPA est.)</span>
+            <span className="text-xl sm:text-2xl md:text-3xl font-medium text-tesla-black">314 mi</span>
+            <span className="text-base sm:text-lg md:text-xl text-tesla-black">Range (EPA est.)</span>
           </div>
           <div className="flex flex-col items-center text-center">
             <span className="text-3xl font-medium text-tesla-black">2.5 s</span>
@@ -43,15 +58,14 @@ const Hero: React.FC = () => {
 
         {/* CTA Buttons */}
         <div className="flex justify-center gap-4">
-          <Link to="/modelx/order-now">
-            <button className="bg-blue-600 text-white px-10 py-3 rounded-md text-xl font-bold hover:bg-blue-700">
-              Order Now
-            </button>
-          </Link>
-          <Link to="/modelx">
-            <button className="bg-white text-black px-10 py-3 rounded-md text-xl font-bold hover:bg-gray-100">
-              Demo Drive
-            </button>
+          <button 
+            onClick={handleOrderNow}
+            className="bg-blue-600 text-white px-10 py-3 rounded-md text-xl font-bold hover:bg-blue-700"
+          >
+            Order Now
+          </button>
+          <Link to="/test-drive" className="bg-white text-black px-10 py-3 rounded-md text-xl font-bold hover:bg-gray-100">
+            Demo Drive
           </Link>
         </div>
 

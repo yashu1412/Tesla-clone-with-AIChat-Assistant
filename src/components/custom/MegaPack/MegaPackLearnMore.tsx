@@ -1,9 +1,11 @@
 import React from "react";
+import {Link ,  useNavigate} from 'react-router-dom';
 import Navbar from '../../common/Navbar';
-import Footer from './layout/Footer';
+import Footer from '../../common/Footer';
 import HeroSection from './sections/HeroSection';
 import SpecificationsSection from './sections/SpecificationsSection';
 import CTASection from './sections/CTASection';
+
 
 const caseStudyData = [
   {
@@ -30,6 +32,19 @@ const caseStudyData = [
 ];
 
 function SolarPanel() {
+     const navigate = useNavigate();
+    
+      const handleOrderNow = () => {
+        navigate('/order-now', {
+          state: {
+            productDetails: {
+              id: 'modelx-2024',
+              name: 'Tesla Model X',
+              price: 79990
+            }
+          }
+        });
+      };
   return (
     <div className="app">
       <Navbar />

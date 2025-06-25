@@ -1,15 +1,30 @@
 import type React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const ExteriorSection: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleOrderNow = () => {
+    navigate('/order-now', {
+      state: {
+        productDetails: {
+          id: 'modelx-2024',
+          name: 'Tesla Model X',
+          price: 79990
+        }
+      }
+    });
+  };
+
   return (
     <section className="relative bg-black text-white py-20">
       <div className="tesla-container max-w-7xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-medium text-center mb-16">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium text-center mb-8 sm:mb-12 md:mb-16">
           Designed for Efficiency
         </h2>
 
         {/* Hero Image with Description */}
-        <div className="flex flex-col items-center text-center px-4 mb-16">
+        <div className="flex flex-col items-center text-center px-4 mb-8 sm:mb-12 md:mb-16">
           <img
             src="https://digitalassets.tesla.com/tesla-contents/image/upload/h_1800,w_2880,c_fit,f_auto,q_auto:best/Model-X-Exterior-Hero-Desktop-Global" // Replace with the first image path
             alt="Tesla Model X Side Profile"
@@ -17,14 +32,24 @@ const ExteriorSection: React.FC = () => {
           />
         </div>
 {/* Heading */}
-<div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8">
+<div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 sm:mb-8">
   <div>
-    <p className="text-sm text-white opacity-70">Exterior</p>
-    <h2 className="text-3xl md:text-4xl font-semibold text-white mt-1">Designed for Efficiency</h2>
+    <p className="text-xs sm:text-sm text-white opacity-70">Exterior</p>
+    <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-white mt-1">Designed for Efficiency</h2>
   </div>
-  <div className="flex gap-3 mt-6 md:mt-0">
-    <button className="bg-white text-black text-sm font-semibold px-6 py-2 rounded-sm">Order Now</button>
-    <button className="bg-[#222] text-white text-sm font-semibold px-6 py-2 rounded-sm">Demo Drive</button>
+  <div className="flex gap-2 sm:gap-3 mt-4 md:mt-0">
+    <button 
+      onClick={handleOrderNow}
+      className="bg-white text-black text-xs sm:text-sm font-semibold px-4 sm:px-6 py-2 rounded-sm"
+    >
+      Order Now
+    </button>
+    <Link 
+      to="/test-drive"
+      className="bg-[#222] text-white text-xs sm:text-sm font-semibold px-4 sm:px-6 py-2 rounded-sm"
+    >
+      Demo Drive
+    </Link>
   </div>
 </div>
 

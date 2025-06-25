@@ -1,5 +1,5 @@
 import type React from 'react';
-import Section from '../layout/Section';
+import Section from './Section';
 
 const InstallationSection: React.FC = () => {
   return (

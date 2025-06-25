@@ -56,10 +56,10 @@ const NavDropdown: React.FC<NavDropdownProps> = ({
                 <div className="font-medium text-black">{link.title}</div>
                 {link.hasLearnOrder && (
                   <div className="mt-2">
-                    <button className="text-blue-600 text-sm font-semibold">
+                    <button className="text-gray-700 text-sm font-semibold hover:underline">
                       Learn
                     </button>
-                    <button className="ml-4 bg-blue-600 text-white px-4 py-2 mr-[-20px] rounded text-sm font-semibold">
+                    <button className="ml-4 text-gray-700 text-sm font-semibold hover:underline">
                       Order
                     </button>
                   </div>

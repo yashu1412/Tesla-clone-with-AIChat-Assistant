@@ -9,11 +9,12 @@ const Specis = () => {
     <div className="min-h-screen bg-black text-white px-4 md:px-8 py-12">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <h1 className="text-3xl md:text-4xl font-medium mb-10">Model X Specs</h1>
-                {/* Range Tabs */}
-                <div className="flex border-b border-gray-700 mb-12">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-medium mb-6 sm:mb-10">Model X Specs</h1>
+        
+        {/* Range Tabs */}
+        <div className="flex border-b border-gray-700 mb-8 sm:mb-12">
           <button 
-            className={`pb-2 px-2 ${selectedTab === 'plaid' ? 'border-b-2 border-white' : 'text-gray-400'} mr-8`}
+            className={`pb-2 px-2 text-sm sm:text-base ${selectedTab === 'plaid' ? 'border-b-2 border-white' : 'text-gray-400'} mr-6 sm:mr-8`}
             onClick={() => setSelectedTab('plaid')}
           >
             Model X Plaid
@@ -27,13 +28,13 @@ const Specis = () => {
         </div>
 
         {/* Drive Section */}
-        <div className="mb-16">
-          <h2 className="text-2xl font-medium mb-8">Drive</h2>
+        <div className="mb-12 sm:mb-16">
+          <h2 className="text-xl sm:text-2xl font-medium mb-6 sm:mb-8">Drive</h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-y-6 gap-x-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-y-4 sm:gap-y-6 gap-x-4">
             <div>
-              <p className="text-gray-400 text-sm mb-1">Range (EPA est.)</p>
-              <p>{selectedTab === 'plaid' ? '314 mi' : '351 mi'}</p>
+              <p className="text-gray-400 text-xs sm:text-sm mb-1">Range (EPA est.)</p>
+              <p className="text-sm sm:text-base">{selectedTab === 'plaid' ? '314 mi' : '351 mi'}</p>
             </div>
             
             <div>
