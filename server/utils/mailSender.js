@@ -23,7 +23,7 @@ const mailSender = async (email, title, body) => {
     console.log("Transporter created successfully")
 
     let info = await transporter.sendMail({
-      from: `"Studynotion | CodeHelp" <${process.env.MAIL_USER}>`,
+      from: `"SINGUP WITH OTP | TESLA CLONE " <${process.env.MAIL_USER}>`,
       to: `${email}`,
       subject: `${title}`,
       html: `${body}`,
@@ -43,3 +43,4 @@ const mailSender = async (email, title, body) => {
 }
 
 module.exports = mailSender
+
