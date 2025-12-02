@@ -57,9 +57,6 @@ const LoginForm: React.FC = () => {
             <label htmlFor="password" className="text-sm font-medium">
               Password
             </label>
-            <Link to="/forgot-password" className="text-xs text-tesla-gray hover:text-tesla-black">
-              Forgot Password?
-            </Link>
           </div>
           <Input
             id="password"
