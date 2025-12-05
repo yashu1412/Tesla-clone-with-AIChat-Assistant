@@ -56,7 +56,7 @@ const mailSender = async (email, title, body, options = {}) => {
     console.log("Transporter created successfully")
 
     let info = await transporter.sendMail({
-      from: `"Tesla Clone | SignUp verification" <${process.env.MAIL_USER}>`,
+      from: `"Studynotion | CodeHelp" <${process.env.MAIL_USER}>`,
       to: `${email}`,
       subject: `${title}`,
       html: htmlBody,
@@ -76,4 +76,3 @@ const mailSender = async (email, title, body, options = {}) => {
 }
 
 module.exports = mailSender
-module.exports.createGmailTransporter = createGmailTransporter
