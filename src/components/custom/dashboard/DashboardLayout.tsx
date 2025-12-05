@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom'; // <-- import Link here
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
@@ -49,10 +49,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
     },
   ];
 
+  const [open, setOpen] = useState(false);
+
   return (
-    <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
-      <div className="w-64 bg-white shadow-lg flex flex-col">
+    <div className="min-h-screen w-screen overflow-x-hidden flex bg-gray-100">
+      <div className="hidden md:flex w-64 bg-white shadow-lg flex-col">
         {/* Tesla Logo */}
         <div className="p-6 border-b flex items-center justify-center">
           <Link to="/" className="tracking-widest text-black">
@@ -97,17 +98,63 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         </nav>
       </div>
 
-      {/* Main Content */}
       <div className="flex-1 overflow-auto">
         <header className="bg-white shadow-sm">
-          <div className="px-6 py-4">
-            <h1 className="text-2xl font-semibold text-gray-800">
+          <div className="px-3 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+            <h1 className="text-xl sm:text-2xl font-semibold text-gray-800">
               Welcome, {user?.first_name} {user?.last_name}
             </h1>
+            <button
+              className="md:hidden px-3 py-2 border rounded text-gray-700"
+              onClick={() => setOpen((v) => !v)}
+            >
+              Menu
+            </button>
+          </div>
+          <div className="md:hidden px-3 pb-3 overflow-x-auto whitespace-nowrap">
+            {menuItems.filter(m => m.roles.includes(user?.role || '')).map((item) => (
+              <button
+                key={item.path}
+                onClick={() => navigate(item.path)}
+                className="inline-flex items-center px-3 py-2 mr-2 text-gray-700 rounded border hover:bg-gray-100"
+              >
+                <span className="mr-2">{item.icon}</span>
+                {item.title}
+              </button>
+            ))}
           </div>
         </header>
-        <main className="p-6">{children}</main>
+        <main className="p-2 sm:p-6" data-chat-container>{children}</main>
       </div>
+
+      {open && (
+        <div className="md:hidden fixed inset-0 z-50">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setOpen(false)}></div>
+          <div className="absolute left-0 top-0 h-full w-64 bg-white shadow-lg p-4">
+            <div className="mb-4 flex items-center justify-between">
+              <span className="font-semibold">Menu</span>
+              <button className="px-2 py-1 border rounded" onClick={() => setOpen(false)}>Close</button>
+            </div>
+            {menuItems.filter(m => m.roles.includes(user?.role || '')).map((item) => (
+              <button
+                key={item.path}
+                onClick={() => { navigate(item.path); setOpen(false); }}
+                className="flex items-center w-full p-2 mb-2 text-gray-700 rounded hover:bg-gray-100"
+              >
+                <span className="mr-2">{item.icon}</span>
+                {item.title}
+              </button>
+            ))}
+            <button
+              onClick={handleLogout}
+              className="flex items-center w-full p-2 mt-2 text-red-600 rounded hover:bg-red-50"
+            >
+              <LogOut size={20} />
+              <span className="ml-3">Logout</span>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

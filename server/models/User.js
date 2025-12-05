@@ -46,6 +46,13 @@ const User = {
     return result.rows;
   },
 
+  // Find user by id
+  findById: async (id) => {
+    const query = `SELECT * FROM users WHERE id = $1 AND deleted_at IS NULL;`;
+    const result = await pool.query(query, [id]);
+    return result.rows[0];
+  },
+
   // Get all users (optionally include soft-deleted users)
   getAllUsers: async (includeDeleted = false) => {
     let query = `SELECT id, first_name, last_name, email, region, language, role, created_at, updated_at FROM users`;

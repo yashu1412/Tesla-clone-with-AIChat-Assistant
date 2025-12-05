@@ -32,6 +32,8 @@ interface CreateProductProps {
   editMode: boolean;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (e: React.FormEvent) => void;
+  categories: { id: string; name: string }[];
+  subcategories: { id: string; name: string; category_name: string }[];
 }
 
 const Transition = React.forwardRef(function Transition(
@@ -53,6 +55,8 @@ const CreateProduct: React.FC<CreateProductProps> = ({
   editMode,
   handleInputChange,
   handleSubmit,
+  categories,
+  subcategories,
 }) => {
   const [activeStep, setActiveStep] = React.useState(0);
 
@@ -75,19 +79,35 @@ const CreateProduct: React.FC<CreateProductProps> = ({
                     label="Category"
                     name="category"
                     required
+                    select
                     value={formData.category}
                     onChange={handleInputChange}
                     sx={teslaInputStyle}
-                  />
+                  >
+                    {categories.map((cat) => (
+                      <MenuItem key={cat.id} value={cat.name}>
+                        {cat.name}
+                      </MenuItem>
+                    ))}
+                  </TextField>
                   <TextField
                     fullWidth
                     label="Subcategory"
                     name="subcategory"
                     required
+                    select
                     value={formData.subcategory}
                     onChange={handleInputChange}
                     sx={teslaInputStyle}
-                  />
+                  >
+                    {subcategories
+                      .filter((s) => !formData.category || s.category_name === formData.category)
+                      .map((s) => (
+                        <MenuItem key={s.id} value={s.name}>
+                          {s.name}
+                        </MenuItem>
+                      ))}
+                  </TextField>
                 </Box>
               </AccordionDetails>
             </Accordion>
@@ -308,3 +328,4 @@ const teslaInputStyle = {
 };
 
 export default CreateProduct;
+import MenuItem from '@mui/material/MenuItem';

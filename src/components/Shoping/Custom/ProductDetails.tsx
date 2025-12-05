@@ -6,6 +6,7 @@ import { useCart } from './Cart/CartContext';
 
 import Navbar from '../Common/ShopNavbar';
 import Footer from '../Common/ShopFooter';
+import { API_BASE_URL } from '../../../utils/constants';
 
 interface Product {
   id: string;
@@ -30,7 +31,7 @@ const ProductDetails: React.FC = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`http://localhost:4001/api/v1/product/${id}`);
+        const response = await axios.get(`${API_BASE_URL}/product/${id}`);
         setProduct(response.data);
       } catch (error) {
         console.error('Error fetching product:', error);
@@ -47,7 +48,7 @@ const ProductDetails: React.FC = () => {
     const fetchRelatedProducts = async () => {
       if (!product) return;
       try {
-        const response = await axios.get(`http://localhost:4001/api/v1/product/getAll`);
+        const response = await axios.get(`${API_BASE_URL}/product/getAll`);
         if (response.data && Array.isArray(response.data)) {
           const filtered = response.data.filter((p: Product) => 
             p.subcategory === product.subcategory && p.id !== product.id

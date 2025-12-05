@@ -138,7 +138,7 @@ const Navbar: React.FC = () => {
       links: [
         { title: "Demo Drive", path: "/test-drive" },
         { title: "Help Me", path: "/help-me" },
-        { title: "Chat with Us", path: "/chat" },
+        { title: "Chat with Us", path: "/tesla-chat-bot" },
         { title: "About", path: "/about" }
       ]
     }

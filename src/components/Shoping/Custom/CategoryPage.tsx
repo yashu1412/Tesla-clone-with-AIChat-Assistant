@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import ShopNavbar from '../Common/ShopNavbar';
 import ShopFooter from '../Common/ShopFooter';
 import ProductCard from './ProductCard';
+import { API_BASE_URL } from '../../../utils/constants';
 
 interface Product {
   id: string;
@@ -36,7 +37,7 @@ const CategoryPage = () => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const response = await axios.get('http://localhost:4001/api/v1/product/getAll');
+        const response = await axios.get(`${API_BASE_URL}/product/getAll`);
         
         // Filter products by category
         let filteredProducts = response.data;

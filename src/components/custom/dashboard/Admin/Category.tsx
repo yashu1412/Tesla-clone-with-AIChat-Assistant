@@ -5,6 +5,7 @@ import AdminNavbar from "./AdminNavbar";
 import AdminFooter from "./AdminFooter";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../../../utils/constants";
 
 interface Category {
   id: string;
@@ -45,7 +46,7 @@ const CategoryManagement: React.FC = () => {
   // Fetch all categories
   const fetchCategories = async () => {
     try {
-      const response = await fetch("http://localhost:4001/api/v1/category/AllCategory");
+      const response = await fetch(`${API_BASE_URL}/category/AllCategory`);
       const data = await response.json();
       
       if (!response.ok) {
@@ -71,7 +72,7 @@ const CategoryManagement: React.FC = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:4001/api/v1/category/CreateCategory", {
+      const response = await fetch(`${API_BASE_URL}/category/CreateCategory`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -104,7 +105,7 @@ const CategoryManagement: React.FC = () => {
     if (!selectedCategory) return;
 
     try {
-      const response = await fetch(`http://localhost:4001/api/v1/category/Update/${selectedCategory.id}`, {
+      const response = await fetch(`${API_BASE_URL}/category/Update/${selectedCategory.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -135,7 +136,7 @@ const CategoryManagement: React.FC = () => {
     if (!window.confirm("Are you sure you want to delete this category?")) return;
 
     try {
-      const response = await fetch(`http://localhost:4001/api/v1/category/Delete/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/category/Delete/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -161,11 +162,12 @@ const CategoryManagement: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-white text-black font-sans">
+    <div className="min-h-screen w-screen overflow-x-hidden flex flex-col bg-white text-black font-sans">
       <AdminNavbar />
 
       <motion.main
-        className="flex-grow p-6 max-w-7xl w-full mx-auto"
+        className="flex-grow p-4 sm:p-6 w-full"
+        data-chat-container
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}

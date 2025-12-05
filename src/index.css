@@ -78,9 +78,17 @@
     @apply border-border;
   }
 
+  html,
+  body,
+  #root {
+    width: 100%;
+    min-height: 100vh;
+  }
+
   body {
     @apply bg-background text-foreground;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin: 0;
   }
 }
 

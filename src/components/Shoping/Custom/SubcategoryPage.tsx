@@ -6,6 +6,7 @@ import ShopNavbar from '../Common/ShopNavbar';
 import ShopFooter from '../Common/ShopFooter';
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { API_BASE_URL } from '../../../utils/constants';
 
 interface Product {
   id: string;
@@ -37,12 +38,12 @@ const SubcategoryPage: React.FC = () => {
       setLoading(true);
       try {
         // First fetch the subcategory details
-        const subcategoryResponse = await axios.get(`http://localhost:4001/api/v1/subcategory/single/${subcategoryId}`);
+        const subcategoryResponse = await axios.get(`${API_BASE_URL}/subcategory/single/${subcategoryId}`);
         if (subcategoryResponse.data && subcategoryResponse.data.success) {
           setSubcategory(subcategoryResponse.data.subCategory);
           
           // Then fetch all products
-          const productsResponse = await axios.get('http://localhost:4001/api/v1/product/getAll');
+          const productsResponse = await axios.get(`${API_BASE_URL}/product/getAll`);
           
           // Filter products by subcategory
           const filteredProducts = productsResponse.data.filter(

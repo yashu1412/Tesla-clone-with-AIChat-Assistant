@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Loader2 } from 'lucide-react';
 import ShopNavbar from '../../Common/ShopNavbar';
 import Footer from '../../Common/ShopFooter';
+import { API_BASE_URL } from '../../../../utils/constants';
 
 interface Product {
   id: string;
@@ -23,19 +24,19 @@ const Lifestyle: React.FC = () => {
   const [activeSubcategory, setActiveSubcategory] = useState<string | null>(null);
 
   const subcategories = [
-    { name: 'Best Sellers', path: 'best-sellers' },
-    { name: 'Gift Card', path: 'gift-card' },
-    { name: 'Bags', path: 'bags' },
-    { name: 'Drinkware', path: 'drinkware' },
-    { name: 'Mini Teslas', path: 'mini-teslas' },
-    { name: 'Outdoor & Tech', path: 'outdoor-tech' }
+    { name: 'Best Sellers', path: 'Best Sellers' },
+    { name: 'Gift Card', path: 'Gift Card' },
+    { name: 'Bags', path: 'Bags' },
+    { name: 'Drinkware', path: 'Drinkware' },
+    { name: 'Mini Teslas', path: 'Mini Teslas' },
+    { name: 'Outdoor & Tech', path: 'Outdoor Tech' }
   ];
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:4001/api/v1/product/category/Lifestyle');
+        const response = await axios.get(`${API_BASE_URL}/product/category/Lifestyle`);
         
         if (response.data.success) {
           setProducts(response.data.products);

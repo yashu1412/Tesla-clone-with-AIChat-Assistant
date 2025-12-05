@@ -6,6 +6,7 @@ const CategoryRoutes = require("./routes/Category");
 const SubcategoryRoutes = require("./routes/Subcategory");
 const ProductRoutes = require("./routes/Product")
 const ProfileRoutes = require("./routes/profile")
+const PaymentRoutes = require("./routes/Payments")
 const database = require("./config/database");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
@@ -47,6 +48,7 @@ app.use("/api/v1/category", CategoryRoutes);
 app.use("/api/v1/profile" , ProfileRoutes);
 app.use("/api/v1/Subcategory", SubcategoryRoutes);
 app.use("/api/v1/product" , ProductRoutes)
+app.use("/api/v1/payments", PaymentRoutes)
 // Testing the server
 app.get("/", (req, res) => {
 	return res.json({

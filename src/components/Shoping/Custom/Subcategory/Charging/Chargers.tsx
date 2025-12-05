@@ -7,6 +7,7 @@ import ShopNavbar from '../../../Common/ShopNavbar';
 import ShopFooter from '../../../Common/ShopFooter';
 import { useCart } from '../../Cart/CartContext';
 import { toast } from 'sonner';
+import { API_BASE_URL } from '../../../../../utils/constants';
 
 interface Product {
   id: string;
@@ -29,7 +30,7 @@ const Chargers: React.FC = () => {
     const fetchChargers = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:4001/api/v1/product/subcategory/Chargers');
+        const response = await axios.get(`${API_BASE_URL}/product/subcategory/Chargers`);
         
         if (response.data && response.data.success) {
           setProducts(response.data.products);

@@ -13,10 +13,8 @@ const createCategoriesTable = async () => {
     );
   `;
   await pool.query(query);
-  console.log("✅ Categories table created");
+  console.log("✅ Categories table ensured");
 };
-
-createCategoriesTable();
 
 const Category = {
   create: async ({ name, description }) => {
@@ -30,20 +28,25 @@ const Category = {
   },
 
   findAll: async () => {
-    const query = `SELECT * FROM categories WHERE deleted_at IS NULL ORDER BY created_at DESC;`;
-    const result = await pool.query(query);
+    const result = await pool.query(
+      `SELECT * FROM categories WHERE deleted_at IS NULL ORDER BY created_at DESC;`
+    );
     return result.rows;
   },
 
   findById: async (id) => {
-    const query = `SELECT * FROM categories WHERE id = $1 AND deleted_at IS NULL;`;
-    const result = await pool.query(query, [id]);
+    const result = await pool.query(
+      `SELECT * FROM categories WHERE id = $1 AND deleted_at IS NULL;`,
+      [id]
+    );
     return result.rows[0];
   },
 
   findByName: async (name) => {
-    const query = `SELECT * FROM categories WHERE name = $1 AND deleted_at IS NULL;`;
-    const result = await pool.query(query, [name]);
+    const result = await pool.query(
+      `SELECT * FROM categories WHERE name = $1 AND deleted_at IS NULL;`,
+      [name]
+    );
     return result.rows[0];
   },
 
@@ -61,10 +64,17 @@ const Category = {
   },
 
   delete: async (id) => {
-    const query = `UPDATE categories SET deleted_at = NOW() WHERE id = $1 RETURNING *;`;
-    const result = await pool.query(query, [id]);
+    const result = await pool.query(
+      `UPDATE categories SET deleted_at = NOW() WHERE id = $1 RETURNING *;`,
+      [id]
+    );
     return result.rows[0];
   }
 };
+
+// Ensure the table exists when the model file loads
+createCategoriesTable().catch((error) =>
+  console.error("❌ Failed to ensure categories table:", error)
+);
 
 module.exports = Category;

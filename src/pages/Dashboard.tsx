@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL, ACCOUNT_TYPE } from '../utils/constants';
 
 interface Product {
   id: string;
@@ -70,24 +71,18 @@ const Dashboard = () => {
           }
         };
 
-        if (user?.role === 'customer') {
+        if (user?.role === ACCOUNT_TYPE.Customer) {
           const profileRes = await axios.get(
-            'http://localhost:4001/api/v1/profile/get',
+            `${API_BASE_URL}/profile/get`,
             config
           );
           setUserProfile(profileRes.data.data);
         } else {
           const [productsRes, categoriesRes, subCategoriesRes] =
             await Promise.all([
-              axios.get('http://localhost:4001/api/v1/product/getAll', config),
-              axios.get(
-                'http://localhost:4001/api/v1/categories/AllCategory',
-                config
-              ),
-              axios.get(
-                'http://localhost:4001/api/v1/subcategories/AllSubcategories',
-                config
-              )
+              axios.get(`${API_BASE_URL}/product/getAll`, config),
+              axios.get(`${API_BASE_URL}/category/AllCategory`, config),
+              axios.get(`${API_BASE_URL}/Subcategory/AllSubcategories`, config)
             ]);
 
           setProducts(productsRes.data.products || []);
@@ -102,7 +97,7 @@ const Dashboard = () => {
           navigate('/login', { state: { from: '/dashboard' } });
         }
 
-        if (user?.role !== 'customer') {
+        if (user?.role !== ACCOUNT_TYPE.Customer) {
           setProducts([]);
           setCategories([]);
           setSubCategories([]);
@@ -158,7 +153,7 @@ const Dashboard = () => {
     );
   }
 
-  if (user?.role === 'customer') {
+  if (user?.role === ACCOUNT_TYPE.Customer) {
     return (
       <DashboardLayout>
         <div className="max-w-4xl mx-auto">
@@ -312,7 +307,7 @@ const Dashboard = () => {
             >
               Add Subcategory
             </button>
-            {user?.role === 'admin' && (
+            {user?.role === ACCOUNT_TYPE.ADMIN && (
               <button
                 onClick={() => window.location.href = '/dashboard/users'}
                 className="p-4 bg-yellow-50 rounded-lg text-yellow-600 hover:bg-yellow-100 transition-colors"

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { MessageSquare, ExternalLink } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import ChatbotPanel from './ChatbotPanel';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
 const ChatbotIcon = () => {
@@ -11,7 +11,10 @@ const ChatbotIcon = () => {
   const [hasBeenOpened, setHasBeenOpened] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
+  const [rightOffset, setRightOffset] = useState(24);
+  const [bottomOffset, setBottomOffset] = useState(24);
   const { toast } = useToast();
+  const location = useLocation();
   
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -43,12 +46,57 @@ const ChatbotIcon = () => {
     }, 500); // Match animation duration
   };
 
+  useEffect(() => {
+    const computeOffset = () => {
+      const selectors = [
+        '.max-w-7xl',
+        '.max-w-6xl',
+        '.max-w-5xl',
+        '.max-w-4xl',
+        '.max-w-3xl'
+      ];
+      let bestRight = 24;
+      let bestRect: DOMRect | null = null;
+      selectors.forEach((sel) => {
+        const nodes = document.querySelectorAll(sel);
+        nodes.forEach((node) => {
+          const rect = node.getBoundingClientRect();
+          if (!bestRect || rect.width > bestRect.width) {
+            bestRect = rect;
+          }
+        });
+      });
+      if (bestRect) {
+        bestRight = Math.max(24, window.innerWidth - bestRect.right + 24);
+        const candidateBottom = Math.max(24, window.innerHeight - bestRect.bottom + 24);
+        setBottomOffset(candidateBottom);
+      } else {
+        const fallbackWidth = 1280; // 7xl
+        bestRight = Math.max(24, (window.innerWidth - fallbackWidth) / 2 + 24);
+        setBottomOffset(24);
+      }
+      setRightOffset(bestRight);
+    };
+    computeOffset();
+    window.addEventListener('resize', computeOffset);
+    return () => window.removeEventListener('resize', computeOffset);
+  }, []);
+
+  useEffect(() => {
+    const t = setTimeout(() => {
+      const event = new Event('resize');
+      window.dispatchEvent(event);
+    }, 0);
+    return () => clearTimeout(t);
+  }, [location.pathname]);
+
   return (
     <>
       <div 
-        className={`fixed bottom-6 right-6 z-50 transition-all duration-500 ease-in-out ${isOpen ? 'scale-0 opacity-0 translate-y-10' : 'scale-100 opacity-100 translate-y-0'}`}
+        className={`fixed z-50 transition-all duration-500 ease-in-out ${isOpen ? 'scale-0 opacity-0 translate-y-10' : 'scale-100 opacity-100 translate-y-0'}`}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
+        style={{ right: rightOffset, bottom: bottomOffset }}
       >
         <div className="flex flex-col items-end gap-3">
           <Link 

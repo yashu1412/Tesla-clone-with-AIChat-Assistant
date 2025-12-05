@@ -12,11 +12,8 @@ const createOTPsTable = async () => {
     );
   `;
   await pool.query(query);
-  console.log("✅ OTPs table created");
+  console.log("✅ OTPs table ensured");
 };
-
-// Run once when the file is loaded
-createOTPsTable();
 
 const OTP = {
   create: async (email, otp) => {
@@ -31,9 +28,9 @@ const OTP = {
 
   findByEmail: async (email) => {
     const query = `
-      SELECT * FROM otps 
+      SELECT * FROM otps
       WHERE email = $1 AND expires_at > NOW()
-      ORDER BY created_at DESC 
+      ORDER BY created_at DESC
       LIMIT 1;
     `;
     const result = await pool.query(query, [email]);
@@ -42,14 +39,19 @@ const OTP = {
 
   verify: async (email, otp) => {
     const query = `
-      SELECT * FROM otps 
+      SELECT * FROM otps
       WHERE email = $1 AND otp = $2 AND expires_at > NOW()
-      ORDER BY created_at DESC 
+      ORDER BY created_at DESC
       LIMIT 1;
     `;
     const result = await pool.query(query, [email, otp]);
     return result.rows[0];
   }
 };
+
+// Ensure the OTP table exists on startup
+createOTPsTable().catch((error) =>
+  console.error("❌ Failed to ensure OTPs table:", error)
+);
 
 module.exports = OTP;

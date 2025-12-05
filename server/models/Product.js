@@ -18,10 +18,8 @@ const createProductsTable = async () => {
     );
   `;
   await pool.query(query);
-  console.log("✅ Products table created");
+  console.log("✅ Products table ensured");
 };
-
-createProductsTable();
 
 const Product = {
   create: async ({ name, price, description, includes, category, subcategory, image }) => {
@@ -36,32 +34,36 @@ const Product = {
   },
 
   findAll: async () => {
-    const query = `SELECT * FROM products ORDER BY created_at DESC;`;
-    const result = await pool.query(query);
+    const result = await pool.query(`SELECT * FROM products ORDER BY created_at DESC;`);
     return result.rows;
   },
 
   findById: async (id) => {
-    const query = `SELECT * FROM products WHERE id = $1;`;
-    const result = await pool.query(query, [id]);
+    const result = await pool.query(`SELECT * FROM products WHERE id = $1;`, [id]);
     return result.rows[0];
   },
 
   findByName: async (name) => {
-    const query = `SELECT * FROM products WHERE LOWER(name) = LOWER($1) LIMIT 1;`;
-    const result = await pool.query(query, [name]);
+    const result = await pool.query(
+      `SELECT * FROM products WHERE LOWER(name) = LOWER($1) LIMIT 1;`,
+      [name]
+    );
     return result.rows[0];
   },
-  
+
   findBySubcategory: async (subcategoryName) => {
-    const query = `SELECT * FROM products WHERE LOWER(subcategory) = LOWER($1) ORDER BY created_at DESC;`;
-    const result = await pool.query(query, [subcategoryName]);
+    const result = await pool.query(
+      `SELECT * FROM products WHERE LOWER(subcategory) = LOWER($1) ORDER BY created_at DESC;`,
+      [subcategoryName]
+    );
     return result.rows;
   },
 
   findByCategory: async (categoryName) => {
-    const query = `SELECT * FROM products WHERE LOWER(category) = LOWER($1) ORDER BY created_at DESC;`;
-    const result = await pool.query(query, [categoryName]);
+    const result = await pool.query(
+      `SELECT * FROM products WHERE LOWER(category) = LOWER($1) ORDER BY created_at DESC;`,
+      [categoryName]
+    );
     return result.rows;
   },
 
@@ -87,10 +89,13 @@ const Product = {
   },
 
   delete: async (id) => {
-    const query = `DELETE FROM products WHERE id = $1 RETURNING *;`;
-    const result = await pool.query(query, [id]);
+    const result = await pool.query(`DELETE FROM products WHERE id = $1 RETURNING *;`, [id]);
     return result.rows[0];
   }
 };
+
+createProductsTable().catch((error) =>
+  console.error("❌ Failed to ensure products table:", error)
+);
 
 module.exports = Product;

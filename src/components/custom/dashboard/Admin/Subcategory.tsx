@@ -19,17 +19,25 @@ import {
   IconButton,
   Typography,
 } from '@mui/material';
+import MenuItem from '@mui/material/MenuItem';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import axios from 'axios';
 import { toast } from 'sonner';
 import AdminNavbar from './AdminNavbar';
 import Footer from './AdminFooter';
+import { API_BASE_URL } from '../../../../utils/constants';
 
 interface SubCategory {
   id: string;
   name: string;
   description: string;
   category_name: string;
+}
+
+interface CategoryItem {
+  id: string;
+  name: string;
+  description?: string;
 }
 
 const Subcategory: React.FC = () => {
@@ -57,7 +65,7 @@ const Subcategory: React.FC = () => {
 
     try {
       if (editMode && currentSubcategory) {
-        const response = await axios.put(`http://localhost:4001/api/v1/Subcategory/Update/${currentSubcategory.id}`, {
+        const response = await axios.put(`${API_BASE_URL}/Subcategory/Update/${currentSubcategory.id}`, {
           name: formData.name.trim(),
           description: formData.description.trim(),
           category_name: formData.category_name.trim()
@@ -73,7 +81,7 @@ const Subcategory: React.FC = () => {
           toast.success('Subcategory updated successfully');
         }
       } else {
-        const response = await axios.post(`http://localhost:4001/api/v1/Subcategory/CreateSubcategory`, {
+        const response = await axios.post(`${API_BASE_URL}/Subcategory/CreateSubcategory`, {
           name: formData.name.trim(),
           description: formData.description.trim(),
           category_name: formData.category_name.trim()
@@ -107,7 +115,7 @@ const Subcategory: React.FC = () => {
   
     if (window.confirm('Are you sure you want to delete this subcategory?')) {
       try {
-        await axios.delete(`http://localhost:4001/api/v1/Subcategory/Delete/${id}`, {
+        await axios.delete(`${API_BASE_URL}/Subcategory/Delete/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Role': user.role
@@ -123,7 +131,8 @@ const Subcategory: React.FC = () => {
     }
   };
   const navigate = useNavigate();
-  const [subcategories, setSubcategories] = useState<SubCategory[]>([]); // Initialize with empty array
+  const [subcategories, setSubcategories] = useState<SubCategory[]>([]);
+  const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [open, setOpen] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [currentSubcategory, setCurrentSubcategory] = useState<SubCategory | null>(null);
@@ -138,16 +147,27 @@ const Subcategory: React.FC = () => {
       navigate('/login');
     } else {
       fetchSubcategories();
+      fetchCategories();
     }
   }, [isAuthenticated, navigate]);
 
   const fetchSubcategories = async () => {
     try {
-      const response = await axios.get(`http://localhost:4001/api/v1/Subcategory/AllSubcategories`);
+      const response = await axios.get(`${API_BASE_URL}/Subcategory/AllSubcategories`);
       setSubcategories(response.data.subCategories || []);
     } catch (error) {
       console.error('Error fetching subcategories:', error);
       setSubcategories([]);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/category/AllCategory`);
+      setCategories(response.data.categories || []);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      setCategories([]);
     }
   };
 
@@ -181,51 +201,54 @@ const Subcategory: React.FC = () => {
   };
 
   return (
-    <>
+    <div className="min-h-screen w-screen overflow-x-hidden flex flex-col bg-white text-black font-sans">
       <AdminNavbar />
-      <Box sx={{ 
-        p: 3,
-        minHeight: 'calc(100vh - 140px)', // Account for navbar and footer height
-        backgroundColor: '#f5f5f5'
-      }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
-          <Typography variant="h5">Subcategories Management</Typography>
+
+      <main className="flex-grow p-4 sm:p-6 w-full" data-chat-container>
+        <h2 className="text-3xl font-semibold mb-6">Subcategories Management</h2>
+
+        <div className="mb-4 flex items-center justify-between">
+          <span className="text-sm text-gray-600">
+            Manage the subcategories used to organize Tesla products.
+          </span>
           <Button variant="contained" color="primary" onClick={handleOpen}>
             Add New Subcategory
           </Button>
-        </Box>
+        </div>
 
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Description</TableCell>
-                <TableCell>Category</TableCell>
-                <TableCell>Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {Array.isArray(subcategories) && subcategories.map((subcategory) => (
-                <TableRow key={subcategory.id}>
-                  <TableCell>{subcategory.name}</TableCell>
-                  <TableCell>{subcategory.description}</TableCell>
-                  <TableCell>{subcategory.category_name}</TableCell>
-                  <TableCell>
-                    <IconButton onClick={() => handleEdit(subcategory)}>
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton onClick={() => handleDelete(subcategory.id)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </TableCell>
+        <div className="bg-gray-100 rounded-lg shadow-md overflow-hidden">
+          <TableContainer component={Paper} sx={{ boxShadow: "none" }}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Description</TableCell>
+                  <TableCell>Category</TableCell>
+                  <TableCell>Actions</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {Array.isArray(subcategories) && subcategories.map((subcategory) => (
+                  <TableRow key={subcategory.id}>
+                    <TableCell>{subcategory.name}</TableCell>
+                    <TableCell>{subcategory.description}</TableCell>
+                    <TableCell>{subcategory.category_name}</TableCell>
+                    <TableCell>
+                      <IconButton onClick={() => handleEdit(subcategory)}>
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton onClick={() => handleDelete(subcategory.id)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
 
-        <Dialog open={open} onClose={handleClose}>
+        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
           <DialogTitle>{editMode ? 'Edit Subcategory' : 'Add New Subcategory'}</DialogTitle>
           <DialogContent>
             <Box component="form" sx={{ pt: 2 }}>
@@ -250,11 +273,18 @@ const Subcategory: React.FC = () => {
               <TextField
                 fullWidth
                 margin="normal"
-                label="Category Name"
+                label="Category"
                 name="category_name"
+                select
                 value={formData.category_name}
                 onChange={handleInputChange}
-              />
+              >
+                {categories.map((cat) => (
+                  <MenuItem key={cat.id} value={cat.name}>
+                    {cat.name}
+                  </MenuItem>
+                ))}
+              </TextField>
             </Box>
           </DialogContent>
           <DialogActions>
@@ -264,9 +294,10 @@ const Subcategory: React.FC = () => {
             </Button>
           </DialogActions>
         </Dialog>
-      </Box>
+      </main>
+
       <Footer />
-    </>
+    </div>
   );
 };
 

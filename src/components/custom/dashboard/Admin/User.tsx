@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import AdminNavbar from "./AdminNavbar";
 import AdminFooter from "./AdminFooter";
 import { motion } from "framer-motion";
+import { API_BASE_URL } from "../../../../utils/constants";
 
 interface User {
   id: string;
@@ -30,7 +31,7 @@ const AllUsers: React.FC = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:4001/api/v1/auth/users", {
+      const response = await fetch(`${API_BASE_URL}/auth/users`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -63,7 +64,7 @@ const AllUsers: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:4001/api/v1/auth/${userId}/role`, {
+      const response = await fetch(`${API_BASE_URL}/auth/${userId}/role`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -97,11 +98,12 @@ const AllUsers: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-white text-black font-sans">
+    <div className="min-h-screen w-screen overflow-x-hidden flex flex-col bg-white text-black font-sans">
       <AdminNavbar />
 
       <motion.main
-        className="flex-grow p-6 max-w-7xl w-full mx-auto"
+        className="flex-grow p-4 sm:p-6 w-full"
+        data-chat-container
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}

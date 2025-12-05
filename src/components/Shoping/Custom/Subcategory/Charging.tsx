@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Loader2 } from 'lucide-react';
 import ShopNavbar from '../../Common/ShopNavbar';
 import Footer from '../../Common/ShopFooter';
+import { API_BASE_URL } from '../../../../utils/constants';
 
 interface Product {
   id: string;
@@ -32,7 +33,7 @@ const Charging: React.FC = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:4001/api/v1/product/category/Charging');
+        const response = await axios.get(`${API_BASE_URL}/product/category/Charging`);
         
         if (response.data.success) {
           setProducts(response.data.products);

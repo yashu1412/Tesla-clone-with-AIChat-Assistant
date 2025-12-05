@@ -3,6 +3,7 @@ import { toast } from 'sonner';
 import { useDispatch } from 'react-redux';
 import { setToken as setTokenAction, setUser as setUserAction, type User } from '../../../store/slices/authSlice';
 import type { AppDispatch } from '../../../store';
+import { API_BASE_URL } from '../../../utils/constants';
 
 // Define the shape of our auth context
 interface AuthContextType {
@@ -29,8 +30,6 @@ interface SignupData {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-const API_BASE_URL = 'https://tesla-clone-with-aichat-assistant.onrender.com/api/v1';
 
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);

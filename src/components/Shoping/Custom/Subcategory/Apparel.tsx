@@ -4,11 +4,12 @@ import axios from 'axios';
 import { Loader2 } from 'lucide-react';
 import ShopNavbar from '../../Common/ShopNavbar';
 import Footer from '../../Common/ShopFooter';
+import { API_BASE_URL } from '../../../../utils/constants';
 
 interface Product {
   id: string;
   name: string;
-  price: number;
+  price: number | string; // ✅ allow string also for safety
   description: string;
   category: string;
   subcategory: string;
@@ -32,9 +33,9 @@ const Apparel: React.FC = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:4001/api/v1/product/category/Apparel');
-        
-        if (response.data.success) {
+        const response = await axios.get(`${API_BASE_URL}/product/category/Apparel`);
+
+        if (response.data?.success && Array.isArray(response.data.products)) {
           setProducts(response.data.products);
         } else {
           setError('Failed to fetch products');
@@ -54,32 +55,40 @@ const Apparel: React.FC = () => {
     setActiveSubcategory(subcategory);
   };
 
-  const filteredProducts = activeSubcategory 
-    ? products.filter(product => 
-        product.subcategory.toLowerCase() === activeSubcategory.toLowerCase()
+  const filteredProducts = activeSubcategory
+    ? products.filter(product =>
+        product.subcategory?.toLowerCase() === activeSubcategory?.toLowerCase()
       )
     : products;
 
   return (
     <>
       <ShopNavbar />
+
       <div className="container mx-auto px-4 py-12">
         <h1 className="text-3xl font-bold mb-8 text-center">Apparel</h1>
-        
-        {/* Subcategory Navigation */}
+
+        {/* ✅ Subcategory Buttons */}
         <div className="flex justify-center mb-8">
           <div className="flex space-x-4">
-            <button 
+            <button
               onClick={() => filterProductsBySubcategory(null)}
-              className={`px-4 py-2 rounded-md ${activeSubcategory === null ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
+              className={`px-4 py-2 rounded-md ${
+                activeSubcategory === null ? 'bg-blue-600 text-white' : 'bg-gray-200'
+              }`}
             >
               All
             </button>
+
             {subcategories.map((subcategory) => (
-              <button 
+              <button
                 key={subcategory.path}
                 onClick={() => filterProductsBySubcategory(subcategory.path)}
-                className={`px-4 py-2 rounded-md ${activeSubcategory === subcategory.path ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
+                className={`px-4 py-2 rounded-md ${
+                  activeSubcategory === subcategory.path
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-200'
+                }`}
               >
                 {subcategory.name}
               </button>
@@ -87,18 +96,18 @@ const Apparel: React.FC = () => {
           </div>
         </div>
 
-        {/* Loading State */}
+        {/* ✅ Loading */}
         {loading && (
           <div className="flex justify-center items-center h-64">
             <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
           </div>
         )}
 
-        {/* Error State */}
+        {/* ✅ Error */}
         {error && (
           <div className="text-center text-red-500 py-8">
             <p>{error}</p>
-            <button 
+            <button
               onClick={() => window.location.reload()}
               className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md"
             >
@@ -107,47 +116,67 @@ const Apparel: React.FC = () => {
           </div>
         )}
 
-        {/* Products Grid */}
+        {/* ✅ Products Grid */}
         {!loading && !error && (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {filteredProducts.length > 0 ? (
                 filteredProducts.map((product) => (
-                  <Link 
-                    to={`/product/${product.id}`} 
+                  <Link
+                    to={`/product/${product.id}`}
                     key={product.id}
                     className="group"
                   >
                     <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
                       <div className="h-64 overflow-hidden">
-                        <img 
-                          src={product.image || 'https://placehold.co/400x400?text=No+Image'} 
+                        <img
+                          src={
+                            product.image ||
+                            'https://placehold.co/400x400?text=No+Image'
+                          }
                           alt={product.name}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                       </div>
+
                       <div className="p-4">
-                        <h3 className="text-lg font-medium mb-2">{product.name}</h3>
-                        <p className="text-gray-600 mb-2 text-sm">{product.subcategory}</p>
-                        <p className="text-blue-600 font-bold">${product.price.toFixed(2)}</p>
+                        <h3 className="text-lg font-medium mb-2">
+                          {product.name}
+                        </h3>
+
+                        <p className="text-gray-600 mb-2 text-sm">
+                          {product.subcategory}
+                        </p>
+
+                        {/* ✅ SAFE PRICE DISPLAY */}
+                        <p className="text-blue-600 font-bold">
+                          $
+                          {product.price
+                            ? Number(product.price).toFixed(2)
+                            : '0.00'}
+                        </p>
                       </div>
                     </div>
                   </Link>
                 ))
               ) : (
                 <div className="col-span-full text-center py-12">
-                  <p className="text-gray-500">No products found in this category.</p>
+                  <p className="text-gray-500">
+                    No products found in this category.
+                  </p>
                 </div>
               )}
             </div>
 
-            {/* Product Count */}
+            {/* ✅ Product Count */}
             <div className="mt-8 text-center text-gray-600">
-              Showing {filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'}
+              Showing {filteredProducts.length}{' '}
+              {filteredProducts.length === 1 ? 'product' : 'products'}
             </div>
           </>
         )}
       </div>
+
       <Footer />
     </>
   );
