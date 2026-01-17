@@ -50,8 +50,8 @@ const ChatbotPanel = ({ isOpen, onClose }: ChatbotPanelProps) => {
   const { toast } = useToast();
   
   // Using Gemini API
-  const apiKey = "AIzaSyCL3f0jUua8Nmsm5HqlboQJMOKDpHydFb8";
-  const baseUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+  const apiKey = "AIzaSyDzLZBRSpzrr84D6dTaZrP3ALBqfEg4LIw";
+  const baseUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
   
   // Focus on input when chat opens
   useEffect(() => {
