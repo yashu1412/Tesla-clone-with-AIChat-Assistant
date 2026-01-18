@@ -43,10 +43,11 @@ const TeslaChatbot = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const cooldownRef = useRef<number>(0);
   
   // Using Gemini API
-  const apiKey = "AIzaSyCL3f0jUua8Nmsm5HqlboQJMOKDpHydFb8";
-  const baseUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY as string;
+  const baseUrl = `${(import.meta.env.VITE_GEMINI_BASE_URL as string) || 'https://generativelanguage.googleapis.com/v1beta'}/models/${(import.meta.env.VITE_GEMINI_MODEL as string) || 'gemini-2.5-flash'}:generateContent`;
 
   // Focus on input when page loads
   useEffect(() => {
@@ -65,73 +66,105 @@ const TeslaChatbot = () => {
   // Generate response using Gemini API
   const generateResponse = async (userMessage: string) => {
     try {
+      if (!apiKey) {
+        toast({
+          title: "Missing API configuration",
+          description: "VITE_GEMINI_API_KEY is not set. Add it to your .env and restart the dev server.",
+          variant: "destructive"
+        });
+        return "The assistant is not configured. Please set VITE_GEMINI_API_KEY and try again.";
+      }
       setIsTyping(true);
-      
-      const response = await fetch(`${baseUrl}?key=${apiKey}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
+      const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+      const requestBody = {
+        contents: [
+          {
+            parts: [
+              {
+                text: `You are Tesla's official AI assistant. You have comprehensive knowledge about all Tesla products, services, and company information.
+ 
+ TESLA VEHICLES:
+ - Model S: Luxury sedan with up to 405 miles of range, 1,020 horsepower, and 0-60 mph in 1.99 seconds with Plaid model
+ - Model 3: Compact sedan with up to 358 miles of range, minimalist interior, and advanced safety features
+ - Model X: SUV with falcon-wing doors, up to 348 miles of range, and seating for up to 7 people
+ - Model Y: Compact SUV with up to 330 miles of range and versatile cargo space
+ - Cybertruck: Innovative pickup with angular exoskeleton design, up to 340 miles of range, and 11,000 lbs towing capacity
+ - Semi: Electric semi-truck with 500 miles of range and enhanced autopilot
+ 
+ TESLA ENERGY PRODUCTS:
+ - Solar Panels: Sleek, low-profile design that integrates with existing roofs
+ - Solar Roof: Entire roof made of solar tiles that look like premium roof tiles
+ - Powerwall: Home battery that stores solar energy and provides backup power
+ - Megapack: Utility-scale energy storage for grid stabilization
+ 
+ TESLA TECHNOLOGY:
+ - Autopilot: Advanced driver assistance system with traffic-aware cruise control and autosteer
+ - Full Self-Driving (FSD): Enhanced capability with navigate on autopilot, auto lane change, autopark, and traffic light recognition
+ - Supercharger Network: Global fast-charging network exclusive to Tesla vehicles
+ - Tesla App: Smartphone app for vehicle control, monitoring, and updates
+ 
+ When responding to the user, be concise, accurate, and helpful. Focus exclusively on Tesla-related information. If asked about competitors or non-Tesla topics, politely redirect to Tesla alternatives.
+ 
+ User question: ${userMessage}`
+              }
+            ]
+          }
+        ],
+        generationConfig: {
+          temperature: 0.2,
+          topP: 0.8,
+          topK: 40,
+          maxOutputTokens: 1024
         },
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [
-                {
-                  text: `You are Tesla's official AI assistant. You have comprehensive knowledge about all Tesla products, services, and company information.
-
-TESLA VEHICLES:
-- Model S: Luxury sedan with up to 405 miles of range, 1,020 horsepower, and 0-60 mph in 1.99 seconds with Plaid model
-- Model 3: Compact sedan with up to 358 miles of range, minimalist interior, and advanced safety features
-- Model X: SUV with falcon-wing doors, up to 348 miles of range, and seating for up to 7 people
-- Model Y: Compact SUV with up to 330 miles of range and versatile cargo space
-- Cybertruck: Innovative pickup with angular exoskeleton design, up to 340 miles of range, and 11,000 lbs towing capacity
-- Semi: Electric semi-truck with 500 miles of range and enhanced autopilot
-
-TESLA ENERGY PRODUCTS:
-- Solar Panels: Sleek, low-profile design that integrates with existing roofs
-- Solar Roof: Entire roof made of solar tiles that look like premium roof tiles
-- Powerwall: Home battery that stores solar energy and provides backup power
-- Megapack: Utility-scale energy storage for grid stabilization
-
-TESLA TECHNOLOGY:
-- Autopilot: Advanced driver assistance system with traffic-aware cruise control and autosteer
-- Full Self-Driving (FSD): Enhanced capability with navigate on autopilot, auto lane change, autopark, and traffic light recognition
-- Supercharger Network: Global fast-charging network exclusive to Tesla vehicles
-- Tesla App: Smartphone app for vehicle control, monitoring, and updates
-
-When responding to the user, be concise, accurate, and helpful. Focus exclusively on Tesla-related information. If asked about competitors or non-Tesla topics, politely redirect to Tesla alternatives.
-
-User question: ${userMessage}`
-                }
-              ]
-            }
-          ],
-          generationConfig: {
-            temperature: 0.2,
-            topP: 0.8,
-            topK: 40,
-            maxOutputTokens: 1024
+        safetySettings: [
+          {
+            category: "HARM_CATEGORY_HARASSMENT",
+            threshold: "BLOCK_MEDIUM_AND_ABOVE"
           },
-          safetySettings: [
-            {
-              category: "HARM_CATEGORY_HARASSMENT",
-              threshold: "BLOCK_MEDIUM_AND_ABOVE"
-            },
-            {
-              category: "HARM_CATEGORY_HATE_SPEECH",
-              threshold: "BLOCK_MEDIUM_AND_ABOVE"
-            },
-            {
-              category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-              threshold: "BLOCK_MEDIUM_AND_ABOVE"
-            },
-            {
-              category: "HARM_CATEGORY_DANGEROUS_CONTENT",
-              threshold: "BLOCK_MEDIUM_AND_ABOVE"
-            }
-          ]
-        })
-      });
+          {
+            category: "HARM_CATEGORY_HATE_SPEECH",
+            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+          },
+          {
+            category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+          },
+          {
+            category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+          }
+        ]
+      };
+      let data: any = null;
+      for (let attempt = 0; attempt < 3; attempt++) {
+        const response = await fetch(`${baseUrl}?key=${apiKey}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(requestBody)
+        });
+        if (response.ok) {
+          data = await response.json();
+          break;
+        }
+        const errorText = await response.text();
+        if (response.status === 429) {
+          const waitMs = Math.min(16000, 1000 * Math.pow(2, attempt)) + Math.floor(Math.random() * 200);
+          await sleep(waitMs);
+          continue;
+        }
+        throw new Error(`API error: ${response.status} - ${errorText}`);
+      }
+      if (!data) {
+        cooldownRef.current = Date.now() + 15000;
+        toast({
+          title: "Rate limit reached",
+          description: "Please wait a few seconds before sending another message.",
+          variant: "destructive"
+        });
+        return "I'm handling many requests right now. Please try again in a few seconds.";
+      }
       
       if (!response.ok) {
         const errorText = await response.text();
@@ -142,7 +175,6 @@ User question: ${userMessage}`
         throw new Error(`API error: ${response.status} - ${errorText}`);
       }
       
-      const data = await response.json();
       
       // Extract the response text from Gemini API response format
       const responseText = data.candidates[0].content.parts[0].text;
@@ -183,6 +215,9 @@ User question: ${userMessage}`
   // Fallback function for non-Tesla responses
   const generateTeslaFallbackResponse = async (userMessage: string): Promise<string> => {
     try {
+      if (!apiKey) {
+        return "The assistant configuration is incomplete. Please set VITE_GEMINI_API_KEY.";
+      }
       const response = await fetch(`${baseUrl}?key=${apiKey}`, {
         method: 'POST',
         headers: {
@@ -228,6 +263,15 @@ User question: ${userMessage}`
 
   const handleSendMessage = async () => {
     if (!input.trim()) return;
+    if (isTyping) return;
+    if (Date.now() < cooldownRef.current) {
+      toast({
+        title: "Please wait",
+        description: "You are sending messages too quickly. Try again shortly.",
+        variant: "destructive"
+      });
+      return;
+    }
     
     // Add user message
     const userMessage = {
