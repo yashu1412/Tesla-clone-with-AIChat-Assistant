@@ -16,9 +16,7 @@ const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const { token, user } = useSelector((state: RootState) => state.auth);
   const { logout } = useAuth();
-
-  console.log('Token state:', token); // Debug log
-  console.log('User state:', user); // Debug log
+ 
 
   const vehicleLinks = [
     { 
