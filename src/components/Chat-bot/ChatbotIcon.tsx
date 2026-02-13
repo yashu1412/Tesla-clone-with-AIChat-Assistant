@@ -47,39 +47,15 @@ const ChatbotIcon = () => {
   };
 
   useEffect(() => {
-    const computeOffset = () => {
-      const selectors = [
-        '.max-w-7xl',
-        '.max-w-6xl',
-        '.max-w-5xl',
-        '.max-w-4xl',
-        '.max-w-3xl'
-      ];
-      let bestRight = 24;
-      let bestRect: DOMRect | null = null;
-      selectors.forEach((sel) => {
-        const nodes = document.querySelectorAll(sel);
-        nodes.forEach((node) => {
-          const rect = node.getBoundingClientRect();
-          if (!bestRect || rect.width > bestRect.width) {
-            bestRect = rect;
-          }
-        });
-      });
-      if (bestRect) {
-        bestRight = Math.max(24, window.innerWidth - bestRect.right + 24);
-        const candidateBottom = Math.max(24, window.innerHeight - bestRect.bottom + 24);
-        setBottomOffset(candidateBottom);
-      } else {
-        const fallbackWidth = 1280; // 7xl
-        bestRight = Math.max(24, (window.innerWidth - fallbackWidth) / 2 + 24);
-        setBottomOffset(24);
-      }
-      setRightOffset(bestRight);
+    const updateOffsets = () => {
+      const safeRight = (window as any).visualViewport?.offsetLeft || 0;
+      const safeBottom = (window as any).visualViewport?.offsetTop || 0;
+      setRightOffset(24 + safeRight);
+      setBottomOffset(24 + safeBottom);
     };
-    computeOffset();
-    window.addEventListener('resize', computeOffset);
-    return () => window.removeEventListener('resize', computeOffset);
+    updateOffsets();
+    window.addEventListener('resize', updateOffsets);
+    return () => window.removeEventListener('resize', updateOffsets);
   }, []);
 
   useEffect(() => {
@@ -100,7 +76,7 @@ const ChatbotIcon = () => {
       >
         <div className="flex flex-col items-end gap-3">
           <Link 
-            to="/tesla-chat-bot"
+            to="/tesla-chatbot"
             className="bg-black text-white p-3 rounded-full shadow-lg hover:bg-black/80 transition-all duration-500 flex items-center justify-center transform hover:scale-110 hover:rotate-[360deg]"
             aria-label="Open Full Chat Experience"
             style={{
